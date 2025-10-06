@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="vn" xmlns:th="http://www.thymeleaf.org">
+
+<div class="nk-header nk-header-fixed is-light"  style="background-image: linear-gradient(to top, #cfd9df 0%, #e2ebf0 100%);" th:fragment="headerLD">
+
+	<form th:action="@{/logout}" method="post" th:hidden="true" name="logoutForm">
+		<input type="submit" />
+	</form>
+
+	<div class="container-lg wide-xl">
+		<div class="nk-header-wrap">
+			<div class="nk-header-brand">
+				<a th:href="@{/}" class="logo-link"> <img
+					class="logo-light logo-img" th:src="@{/} + @{${SITE_LOGO}}"
+					alt="logo"> <img class="logo-dark logo-img"
+					th:src="@{/} + @{${SITE_LOGO}}" alt="logo-dark">
+				</a>
+			</div>
+			<!-- .nk-header-brand -->
+			<div class="nk-header-menu">
+				<ul class="nk-menu nk-menu-main">
+					<!-- .nk-menu-item -->
+					<li class="nk-menu-item has-sub"><a href="#abb"
+						class="nk-menu-link nk-menu-toggle"> <span
+							class="nk-menu-text fs-16px">Chúng tôi</span>
+					</a>
+						<ul class="nk-menu-sub">
+							<li class="nk-menu-item"><a th:href="@{/api/introduce}"
+								class="nk-menu-link"><span class="nk-menu-text fs-15px">Giới thiệu</span></a></li>
+							<li class="nk-menu-item"><a th:href="@{/api/instruct}"
+								class="nk-menu-link"><span class="nk-menu-text fs-15px">Hướng dẫn</span></a></li>
+						</ul>
+						<!-- .nk-menu-sub --></li>
+					<!-- .nk-menu-item -->
+					<li class="nk-menu-item"><a href="html/components.html"
+						class="nk-menu-link"> <span class="nk-menu-text fs-16px">Phả ký</span>
+					</a></li>
+					<!-- .nk-menu-item -->
+					<li class="nk-menu-item"><a th:href="@{/api/familyTree}"
+						class="nk-menu-link"> <span class="nk-menu-text fs-16px">Phả đồ</span>
+					</a></li>
+					<!-- .nk-menu-item -->
+					<li class="nk-menu-item"><a th:href="@{/api/news}"
+						class="nk-menu-link"> <span class="nk-menu-text fs-16px">Tin tức</span>
+					</a></li>
+					<!-- .nk-menu-item -->
+					<li class="nk-menu-item"><a th:href="@{/api/contact}"
+						class="nk-menu-link"> <span class="nk-menu-text fs-16px fw-bold">Liên hệ</span>
+					</a></li>
+					<!-- .nk-menu-item -->
+				</ul>
+				<!-- .nk-menu -->
+			</div>
+			<!-- .nk-header-menu -->
+			<div class="nk-header-tools">
+				<ul class="nk-quick-nav">
+					<li class="dropdown user-dropdown"><a href="#"
+						class="dropdown-toggle me-lg-n1" data-bs-toggle="dropdown">
+							<div class="user-toggle">
+								<div class="user-avatar sm">
+									<th:block sec:authorize="!isAuthenticated()">
+										<em class="icon ni ni-user-alt"></em>
+									</th:block>
+									<th:block sec:authorize="isAuthenticated()">
+										<img th:src="${#authentication.principal.photo}" alt="User Photo"/>
+									</th:block>
+								</div>
+							</div>
+					</a>
+						<div
+							class="dropdown-menu dropdown-menu-md dropdown-menu-end dropdown-menu-s1">
+							<th:block sec:authorize="isAuthenticated()">
+								<div class="dropdown-inner user-card-wrap bg-lighter d-none d-md-block">
+									<div class="user-card">
+										<div class="user-avatar">
+											<span sec:authentication="principal.AbbrName"></span>
+										</div>
+										<div class="user-info">
+											<span class="lead-text" sec:authentication="principal.userName"></span> <span
+												class="sub-text" sec:authentication="principal.email"></span>
+										</div>
+										<div class="user-action">
+											<a class="btn btn-icon me-n2" title="Đi tới trang quản trị"
+												th:href="@{/admin}" target="_blank"><em class="icon ni ni-arrow-up-right"></em></a>
+										</div>
+									</div>
+								</div>
+							</th:block>
+							<div class="dropdown-inner">
+								<ul class="link-list">
+									<th:block sec:authorize="isAuthenticated()">
+										<li><a th:href="@{/api/acount}">
+											<em class="icon ni ni-user-alt"></em><span>Tài khoản</span>
+											</a></li>
+									</th:block>
+									<th:block sec:authorize="!isAuthenticated()">
+									<li><a th:href="@{/api/register}"><em
+											class="icon ni ni-setting-alt"></em><span>Đăng kí</span></a></li>
+									<li><a th:href="@{/admin}"><em
+											class="icon ni ni-activity-alt"></em><span>Đăng nhập</span></a></li>
+									</th:block>
+								</ul>
+							</div>
+							<th:block sec:authorize="isAuthenticated()">
+								<div class="dropdown-inner">
+									<ul class="link-list">
+										<li><a href="#" id="logoutlink"><em class="icon ni ni-signout"></em><span>Đăng xuất</span></a></li>
+									</ul>
+								</div>
+							</th:block>
+						</div></li>
+					<!-- .dropdown -->
+					<li class="d-lg-none"><a href="#"
+						class="toggle nk-quick-nav-icon me-n1" data-target="sideNav"><em
+							class="icon ni ni-menu"></em></a></li>
+				</ul>
+				<!-- .nk-quick-nav -->
+			</div>
+			<!-- .nk-header-tools -->
+		</div>
+		<!-- .nk-header-wrap -->
+	</div>
+	<!-- .container-fliud -->
+</div>
+
+</html>

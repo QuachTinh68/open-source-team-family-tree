@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="vn" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<!-- Main Head -->
+<head th:replace="fragments :: client_head(${pageTitle}, 'none')"></head>
+<body>
+	<div id="wrapper">
+		<!-- page preloader begin -->
+		<div id="de-loader"></div>
+		<!-- page preloader close -->
+		<!-- header begin -->
+		<header th:replace="common/headerLD :: headerLD"></header>
+		<!-- header close -->
+		<!-- content begin -->
+		<div class="no-bottom no-top" id="content">
+			<div id="top"></div>
+			<!-- section begin -->
+			<section id="subheader" class="jarallax">
+				<img src="/client/images/background/subheader.jpg"
+					class="jarallax-img" alt="">
+				<div class="center-y relative text-center">
+					<div class="container">
+						<div class="row">
+							<div class="col-md-12 text-center">
+								<h1>Đăng kí tài khoản</h1>
+							</div>
+							<div class="clearfix"></div>
+						</div>
+					</div>
+				</div>
+			</section>
+			<!-- section close -->
+			<section aria-label="section">
+				<div class="container">
+					<div class="row g-custom-x">
+						<h4 class="nk-block-title">Đăng kí thành công!</h4>
+						<div class="nk-block-des text-success">
+							<p>Để kích hoạt tài khoản</p>
+							<p>Vui lòng kiểm tra Hộp thư trong Email đăng kí của bạn hoặc
+								thư rác! Xin cảm ơn!</p>
+						</div>
+					</div>
+				</div>
+			</section>
+		</div>
+		<!-- content close -->
+		<a href="#" id="back-to-top"></a>
+		<!-- footer begin -->
+		<footer th:replace="common/footerLD :: footerLD"></footer>
+		<!-- footer close -->
+
+	</div>
+	<!-- JavaScript -->
+	<script th:src="@{/client/js/plugins.js}"></script>
+	<script th:src="@{/client/js/designesia.js}"></script>
+
+</body>
+
+</html>

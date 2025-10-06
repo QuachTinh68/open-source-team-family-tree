@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="vn" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<!-- Main Head -->
+<head th:replace="fragments :: page_head('Yêu cầu đăng nhập', 'none')"></head>
+<!-- End Head -->
+
+<body class="nk-body bg-lighter npc-general has-sidebar ">
+    <div class="nk-app-root">
+        <!-- main @s -->
+        <div class="nk-main ">
+            <!-- wrap @s -->
+            <div class="nk-wrap nk-wrap-nosidebar">
+                <!-- content @s -->
+                <div class="nk-content ">
+                    <div class="nk-block nk-block-middle wide-md mx-auto">
+                        <div class="nk-block-content nk-error-ld text-center">
+                            <svg fill="#3fabee" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="80px" height="80px" viewBox="0 0 512.00 512.00" enable-background="new 0 0 512 512" xml:space="preserve" stroke="#3fabee"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#CCCCCC" stroke-width="1.024"></g><g id="SVGRepo_iconCarrier"> <g> <path d="M256,0C114.609,0,0,114.609,0,256s114.609,256,256,256s256-114.609,256-256S397.391,0,256,0z M256,472 c-119.297,0-216-96.703-216-216S136.703,40,256,40s216,96.703,216,216S375.297,472,256,472z"></path> <path d="M296,240h-8.5c0.312-2.516,0.5-5.188,0.5-8c0-13.203-14.406-24-32-24s-32,10.797-32,24c0,2.812,0.188,5.484,0.5,8H216 c-4.422,0-8,3.578-8,8v48c0,4.422,3.578,8,8,8h80c4.422,0,8-3.578,8-8v-48C304,243.578,300.422,240,296,240z M240,240 c-4.797-9.594,7.203-19.203,16-19.203s20.797,9.609,16,19.203H240z"></path> <path d="M370.906,311.188L401.594,256h-19.188c-0.797-72.344-56.625-127.516-126.781-127.609 c-70.609-0.078-127.766,57.078-127.672,127.688c0.078,70.625,57.359,127.906,127.969,127.969 c39.875,0.094,75.406-18.125,98.797-46.625l-15.281-25.484c-17.938,27.016-48.641,44.75-83.562,44.703 c-55.469-0.031-100.484-45.047-100.531-100.531c-0.062-55.484,44.844-100.375,100.312-100.312 c55.219,0.094,99.078,45.781,99.547,100.203l-19.047-0.031L370.906,311.188z"></path> </g> </g></svg>
+                            <div class="wide-xs mx-auto">
+                                <h3 class="nk-error-title">Bạn chưa đăng nhập</h3>
+                                <p class="nk-error-text">Vui lòng đăng nhập để sử dụng tính năng này.</p>
+                                <a th:href="@{/login}" class="btn btn-lg btn-primary mt-2">Đăng nhập</a>
+                            </div>
+                        </div>
+                    </div><!-- .nk-block -->
+                </div>
+                <!-- wrap @e -->
+            </div>
+            <!-- content @e -->
+        </div>
+        <!-- main @e -->
+    </div>
+
+</body>
+
+</html>

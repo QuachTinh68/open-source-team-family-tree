@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="vn" xmlns:th="http://www.thymeleaf.org">
+<!-- Main Head -->
+<head th:replace="fragments :: client_head(${pageTitle}, 'none')"></head>
+<body>
+	<div id="wrapper">
+		<!-- page preloader begin -->
+		<div id="de-loader"></div>
+		<!-- page preloader close -->
+		<!-- header begin -->
+		<header th:replace="common/headerLD :: headerLD"></header>
+		<!-- header close -->
+		<!-- content begin -->
+		<div class="no-bottom no-top" id="content">
+			<div id="top"></div>
+			<!-- section begin -->
+			<section id="subheader" class="jarallax">
+				<img src="/client/images/background/subheader.jpg"
+					class="jarallax-img" alt="">
+				<div class="center-y relative text-center">
+					<div class="container">
+						<div class="row">
+							<div class="col-md-12 text-center">
+								<h1>Thay đổi mật khẩu</h1>
+							</div>
+							<div class="clearfix"></div>
+						</div>
+					</div>
+				</div>
+			</section>
+			<!-- section close -->
+			<section aria-label="section">
+				<div class="container">
+					<div class="row g-custom-x">
+						<div class="card card-bordered" style="display: flex; justify-content: center; align-items: center; padding: 80px 0">
+							<div class="card-inner card-inner-lg" style="width: 50%">
+								<div th:if="${message == null || #strings.isEmpty(message)}">
+                                <div class="nk-block-head">
+                                    <div class="nk-block-head-content">
+                                        <h4 class="nk-block-title">Thay đổi mật khẩu</h4>
+                                    </div>
+                                </div>
+                                <form th:action="@{/api/reset_password}" method="post">
+                                	<input type="hidden" th:value="${token}" name="token">
+									
+                                    <div class="form-group">
+                                        <label class="form-label" for="password">Mật khẩu</label>
+                                        <div class="form-control-wrap">
+                                            <a href="#" class="form-icon form-icon-right passcode-switch lg" data-target="password">
+                                                <em class="passcode-icon icon-show icon ni ni-eye"></em>
+                                                <em class="passcode-icon icon-hide icon ni ni-eye-off"></em>
+                                            </a>
+                                            <input type="password" class="form-control form-control-lg" name="password" id="password" required="required" placeholder="Nhập mật khẩu">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label" for="checkpass">Mật khẩu</label>
+                                        <div class="form-control-wrap">
+                                            <a href="#" class="form-icon form-icon-right passcode-switch lg" data-target="checkpass">
+                                                <em class="passcode-icon icon-show icon ni ni-eye"></em>
+                                                <em class="passcode-icon icon-hide icon ni ni-eye-off"></em>
+                                            </a>
+                                            <input type="password" class="form-control form-control-lg" id="checkpass" oninput="checkPasswordMatch(this)" required="required" placeholder="Nhập lại mật khẩu">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <button class="btn btn-lg btn-primary btn-block" type="submit">Xác nhận</button>
+                                    </div>
+                                </form>
+								</div>
+								<div th:if="${message != null || !#strings.isEmpty(message)}">
+									<div class="form-group">
+										<a class="btn btn btn-primary btn-block" th:href="@{/login}">Đăng nhập</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+		</div>
+		<!-- content close -->
+		<a href="#" id="back-to-top"></a>
+		<!-- footer begin -->
+		<footer th:replace="common/footerLD :: footerLD"></footer>
+		<!-- footer close -->
+
+	</div>
+	<!-- JavaScript -->
+	<script th:src="@{/client/js/plugins.js}"></script>
+	<script th:src="@{/client/js/designesia.js}"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.16/dist/sweetalert2.all.min.js"></script>
+	
+	<script type="text/javascript">
+		contextPath = "[[@{/}]]";
+
+		function checkPasswordMatch(confirmPassword) {
+			if (confirmPassword.value != $("#password").val()) {
+				confirmPassword.setCustomValidity("Mật khẩu không khớp!")
+			} else {
+				confirmPassword.setCustomValidity("");
+			}
+		}
+
+		message = '[[${message}]]';
+
+		if (message !== null && message.trim() !== '') {
+			Swal.fire('Thành công', message, 'success');
+		}
+	</script>
+</body>
+
+</html>

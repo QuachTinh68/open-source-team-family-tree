@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="vn" xmlns:th="http://www.thymeleaf.org">
+<!-- Main Head -->
+<head th:replace="fragments :: client_head(${pageTitle}, 'none')"></head>
+<body>
+	<div id="wrapper">
+		<!-- page preloader begin -->
+		<div id="de-loader"></div>
+		<!-- page preloader close -->
+		<!-- header begin -->
+		<header th:replace="common/headerLD :: headerLD"></header>
+		<!-- header close -->
+		<!-- content begin -->
+		<div class="no-bottom no-top" id="content">
+			<div id="top"></div>
+			<!-- section begin -->
+			<section id="subheader" class="jarallax">
+				<img src="/client/images/background/subheader.jpg"
+					class="jarallax-img" alt="">
+				<div class="center-y relative text-center">
+					<div class="container">
+						<div class="row">
+							<div class="col-md-12 text-center">
+								<h1>Đổi mật khẩu</h1>
+							</div>
+							<div class="clearfix"></div>
+						</div>
+					</div>
+				</div>
+			</section>
+			<!-- section close -->
+			<section aria-label="section">
+				<div class="container">
+					<div class="row g-custom-x">
+						<div class="card card-bordered" style="display: flex; justify-content: center; align-items: center; padding: 80px 0">
+							<div class="card-inner card-inner-lg" style="width: 50%">
+								<form th:action="@{/api/change_passwd}" method="post" onsubmit="changePasswd(this); return false;">
+                                    <div class="form-group">
+                                        <label class="form-label" for="checkpasswd">Mật khẩu cũ</label>
+                                        <div class="form-control-wrap">
+                                            <a href="#" class="form-icon form-icon-right passcode-switch lg" data-target="checkpasswd">
+                                                <em class="passcode-icon icon-show icon ni ni-eye"></em>
+                                                <em class="passcode-icon icon-hide icon ni ni-eye-off"></em>
+                                            </a>
+                                            <input type="password" class="form-control form-control-lg" name="checkpasswd" id="checkpasswd" required="required" placeholder="Nhập mật khẩu cũ">
+                                        </div>
+                                    </div>
+									
+                                    <div class="form-group">
+                                        <label class="form-label" for="password">Mật khẩu mới</label>
+                                        <div class="form-control-wrap">
+                                            <a href="#" class="form-icon form-icon-right passcode-switch lg" data-target="password">
+                                                <em class="passcode-icon icon-show icon ni ni-eye"></em>
+                                                <em class="passcode-icon icon-hide icon ni ni-eye-off"></em>
+                                            </a>
+                                            <input type="password" class="form-control form-control-lg" name="password" id="password" required="required" placeholder="Nhập mật khẩu mới">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label" for="checkpass">Nhập lại mật khẩu mới</label>
+                                        <div class="form-control-wrap">
+                                            <a href="#" class="form-icon form-icon-right passcode-switch lg" data-target="checkpass">
+                                                <em class="passcode-icon icon-show icon ni ni-eye"></em>
+                                                <em class="passcode-icon icon-hide icon ni ni-eye-off"></em>
+                                            </a>
+                                            <input type="password" class="form-control form-control-lg" id="checkpass" oninput="checkPasswordMatch(this)" required="required" placeholder="Nhập lại mật khẩu mới">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <button class="btn btn-lg btn-primary btn-block" type="submit">Xác nhận</button>
+                                    </div>
+                                </form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+		</div>
+		<!-- content close -->
+		<a href="#" id="back-to-top"></a>
+		<!-- footer begin -->
+		<footer th:replace="common/footerLD :: footerLD"></footer>
+		<!-- footer close -->
+
+	</div>
+	<!-- JavaScript -->
+	<script th:src="@{/client/js/plugins.js}"></script>
+	<script th:src="@{/client/js/designesia.js}"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.16/dist/sweetalert2.all.min.js"></script>
+	
+	<script type="text/javascript">
+		contextPath = "[[@{/}]]";
+
+		function checkPasswordMatch(confirmPassword) {
+			if (confirmPassword.value != $("#password").val()) {
+				confirmPassword.setCustomValidity("Mật khẩu không khớp!")
+			} else {
+				confirmPassword.setCustomValidity("");
+			}
+		}
+		
+		function changePasswd(form) {
+			
+			url = "[[@{/api/change_passwd}]]";
+			
+			checkPasswd = $("#checkpasswd").val();
+			passwd = $("#password").val();
+			
+			csrfValue = $("input[name='_csrf']").val();
+			params = {
+				checkPass : checkPasswd,
+				password : passwd,
+				_csrf : csrfValue
+			};
+			$.post(url, params, function(response) {
+				if (response == "OK") {
+					Swal.fire('Thành công', 'Thay đổi mật khẩu thành công', 'success').then((result) => {
+						if (result.isConfirmed) {
+							window.location.href = contextPath + 'api/acount';
+						}
+					});
+				} else if (response == "ERROR") {
+					Swal.fire('Thông báo', 'Mật khẩu cũ của bạn không chính xác', 'warning');
+				} else {
+					Swal.fire('Cảnh báo', 'Đã xảy ra lỗi', 'warning');
+				}
+			}).fail(function() {
+				Swal.fire('Cảnh báo', 'Đã xảy ra lỗi', 'warning');
+			});
+
+		}
+
+	</script>
+</body>
+
+</html>

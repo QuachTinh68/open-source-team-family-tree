@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="vn" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<!-- Main Head -->
+<head th:replace="fragments :: page_head(${pageTitle}, 'none')"></head>
+
+<body class="nk-body bg-lighter npc-general has-sidebar ">
+    <div class="nk-app-root">
+        <!-- main @s -->
+        <div class="nk-main ">
+            <!-- sidebar @s -->
+            	<div th:replace="common/header :: menu"></div>
+            <!-- sidebar @e -->
+            <!-- wrap @s -->
+            <div class="nk-wrap ">
+                <!-- main header @s -->
+                <div th:replace="common/header :: header-top"></div>
+                <!-- main header @e -->
+                <!-- content @s -->
+                <div class="nk-content ">
+                    <div class="container-fluid">
+                        <div class="nk-content-inner">
+                            <div class="nk-content-body">
+                                <div class="nk-block">
+                                    <div class="row g-gs">
+                                        <div class="col-xxl-6">
+                                            <div class="row g-gs">
+                                                <div class="col-lg-6 col-xxl-12">
+                                                    <div class="card card-bordered">
+                                                        <div class="card-inner">
+                                                            <div class="card-title-group align-start mb-2">
+                                                                <div class="card-title">
+                                                                    <h6 class="title">Danh sách Tree</h6>
+                                                                </div>
+                                                                <div class="card-tools">
+                                                                    <em class="card-hint icon ni ni-help-fill" data-bs-toggle="tooltip" data-bs-placement="left" title="Revenue from subscription"></em>
+                                                                </div>
+                                                            </div>
+                                                            <div class="align-end gy-3 gx-5 flex-wrap flex-md-nowrap flex-lg-wrap flex-xxl-nowrap">
+                                                                <div class="nk-sale-data-group flex-md-nowrap g-4">
+                                                                    <div class="nk-sale-data">
+                                                                        <span class="fs-13px">Hiện có <span class="amount text-success fw-bold">[[${summary.totalPatri}]]</span> cây gia phả</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="nk-sales-ck sales-revenue">
+                                                                    <canvas class="sales-bar-chart" id="salesRevenue"></canvas>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div><!-- .col -->
+                                                <div class="col-lg-6 col-xxl-12">
+                                                    <div class="row g-gs">
+                                                        <div class="col-sm-6 col-lg-12 col-xxl-6">
+                                                            <div class="card card-bordered">
+                                                                <div class="card-inner">
+                                                                    <div class="card-title-group align-start mb-2">
+                                                                        <div class="card-title">
+                                                                            <h6 class="title">Đăng kí sử dụng [[${NAME_SHOP}]]</h6>
+                                                                        </div>
+                                                                        <div class="card-tools">
+                                                                            <em class="card-hint icon ni ni-help-fill" data-bs-toggle="tooltip" data-bs-placement="left" title="Total active subscription"></em>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="align-end flex-sm-wrap g-4 flex-md-nowrap">
+                                                                        <div class="nk-sale-data">
+                                                                            <span class="amount">[[${summary.totalUsers}]] người dùng</span>
+                                                                            <span class="sub-title"><span class="change down text-danger"><em class="icon ni ni-cross-circle"></em></em>Chưa kích hoạt</span>[[${summary.disabledUsersCount}]]</span>
+                                                                        </div>
+                                                                        <div class="nk-sales-ck">
+                                                                            <canvas class="sales-bar-chart" id="activeSubscription"></canvas>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div><!-- .card -->
+                                                        </div><!-- .col -->
+                                                        <div class="col-sm-6 col-lg-12 col-xxl-6">
+                                                            <div class="card card-bordered">
+                                                                <div class="card-inner">
+                                                                    <div class="card-title-group align-start mb-2">
+                                                                        <div class="card-title">
+                                                                            <h6 class="title">Tin tức</h6>
+                                                                        </div>
+                                                                        <div class="card-tools">
+                                                                            <em class="card-hint icon ni ni-help-fill" data-bs-toggle="tooltip" data-bs-placement="left" title="Daily Avg. subscription"></em>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="align-end flex-sm-wrap g-4 flex-md-nowrap">
+                                                                        <div class="nk-sale-data">
+                                                                            <span class="fs-13px">Hiện có <span class="amount text-success fw-bold">[[${summary.totalNews}]]</span> Tin tức</span>
+                                                                        </div>
+                                                                        <div class="nk-sales-ck">
+                                                                            <canvas class="sales-bar-chart" id="totalSubscription"></canvas>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div><!-- .card -->
+                                                        </div><!-- .col -->
+                                                    </div><!-- .row -->
+                                                </div><!-- .col -->
+                                            </div><!-- .row -->
+                                        </div><!-- .col -->
+                                    </div><!-- .row -->
+                                </div><!-- .nk-block -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- content @e -->
+                <!-- footer @s -->
+            </div>
+            <!-- wrap @e -->
+        </div>
+        <!-- main @e -->
+    </div>
+    <!-- app-root @e -->
+    <!-- select region modal -->
+    <!-- JavaScript -->
+    <script th:src="@{/js/bundle.js?ver=3.2.0}"></script>
+    <script th:src="@{/js/scripts.js?ver=3.2.0}"></script>
+    <script th:src="@{/js/charts/gd-analytics.js?ver=3.2.0}"></script>
+    <script th:src="@{/js/libs/jqvmap.js?ver=3.2.0}"></script>
+</body>
+
+</html>

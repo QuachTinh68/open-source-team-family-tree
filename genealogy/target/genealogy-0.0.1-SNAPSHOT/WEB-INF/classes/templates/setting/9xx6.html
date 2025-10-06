@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="vn" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<div th:fragment="content" th:remove="tag">
+
+	<form th:action="@{/admin/settings/save_mail_templates}" method="post">
+		<ul class="nav nav-tabs mt-n3">
+			<li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#customerVerification"><span>Đăng kí tài khoản</span></a></li>
+		</ul>
+		<div class="tab-content">
+			<div class="tab-pane active" id="customerVerification">
+				<div class="col-lg-12">
+					<div class="form-group">
+						<label class="form-label">Tiêu đề</label>
+						<div class="form-control-wrap">
+							<input type="text" class="form-control" name="CUSTOMER_VERIFY_SUBJECT" th:value="${CUSTOMER_VERIFY_SUBJECT}" required>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="form-label" for="customerVerificationContent">Nội dung</label>
+						<div class="form-control-wrap">
+							<textarea class="form-control" name="CUSTOMER_VERIFY_CONTENT" id="customerVerificationContent">[[${CUSTOMER_VERIFY_CONTENT}]]</textarea>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-12 text-center p-3">
+			<button type="submit" class="btn btn-outline-primary m-1">Lưu</button>
+			<button class="btn btn-outline-light m-1">Hủy</button>
+		</div>
+
+	</form>
+
+</div>
+
+</html>

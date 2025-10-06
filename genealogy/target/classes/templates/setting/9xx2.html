@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="vn" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<div th:fragment="content" th:remove="tag">
+
+	<form th:action="@{/admin/settings/save_general}" method="post"
+		enctype="multipart/form-data">
+		<ul class="nav nav-tabs mt-n3">
+			<li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#general"><span>Thông tin chung</span></a></li>
+			<li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#introduce"><span>Giới thiệu</span></a></li>
+			<li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#instruct"><span>Hướng dẫn sử dụng</span></a></li>
+		</ul>
+		<div class="tab-content">
+			<div class="tab-pane active" id="general">
+				<div class="row g-4">
+					<div class="col-lg-6">
+						<div class="form-group">
+							<label class="form-label" for="full-name-1">Tên WebSite</label>
+							<div class="form-control-wrap">
+								<input type="text" class="form-control" name="SITE_NAME"
+									th:value="${SITE_NAME}" required>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-6">
+						<div class="form-group">
+							<label class="form-label" for="full-name-1">Copyright</label>
+							<div class="form-control-wrap">
+								<input type="text" class="form-control" name="COPYRIGHT"
+									th:value="${COPYRIGHT}" required>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-6">
+						<div class="form-group">
+							<div id="myfileupload">
+								<img class="img-fluid" width="100" th:src="@{/} + @{${SITE_LOGO}}"
+									alt="Site Logo Thumb image" id="thumbnail" />
+									<label for="fileImage" class="custom-file-upload btn btn-primary">Chọn ảnh</label>
+								<input type="file" accept="image/png, image/jpeg" name="fileImage" id="fileImage" />
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-6">
+						<div class="form-group">
+							<label class="form-label" for="full-name-1">Tên thường gọi</label>
+							<div class="form-control-wrap">
+								<input type="text" class="form-control" name="NAME_SHOP"
+									th:value="${NAME_SHOP}" required>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-6">
+						<div class="form-group">
+							<label class="form-label" for="full-name-1">Số di động</label>
+							<div class="form-control-wrap">
+								<input type="text" class="form-control" name="PHONE"
+									th:value="${PHONE}" required>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-6">
+						<div class="form-group">
+							<label class="form-label" for="full-name-1">Hot line</label>
+							<div class="form-control-wrap">
+								<input type="text" class="form-control" name="TEL"
+									th:value="${TEL}" required>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-6">
+						<div class="form-group">
+							<label class="form-label" for="full-name-1">Email liên hệ</label>
+							<div class="form-control-wrap">
+								<input type="text" class="form-control" name="EMAIL_COMPANY"
+									th:value="${EMAIL_COMPANY}" required>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-6">
+						<div class="form-group">
+							<label class="form-label" for="full-name-1">Địa chỉ</label>
+							<div class="form-control-wrap">
+								<input type="text" class="form-control" name="ADDRESS_COMPANY"
+									th:value="${ADDRESS_COMPANY}" required>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-6">
+						<div class="form-group">
+							<label class="form-label" for="full-name-1">Địa chỉ google MAP</label>
+							<div class="form-control-wrap">
+								<input type="text" class="form-control" name="MAP_ADDR"
+									th:value="${MAP_ADDR}" required>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-6">
+						<div class="form-group">
+							<label class="form-label" for="full-name-1">Mã KEY GOOGLE MAP</label>
+							<div class="form-control-wrap">
+								<input type="text" class="form-control" name="MAP_KEY"
+									th:value="${MAP_KEY}" required>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-6">
+						<div class="form-group">
+							<label class="form-label" for="full-name-1">Mã số thuế</label>
+							<div class="form-control-wrap">
+								<input type="text" class="form-control" name="TAXNO"
+									th:value="${TAXNO}" required>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-6">
+						<div class="form-group">
+							<label class="form-label" for="full-name-1">Giờ hoạt động</label>
+							<div class="form-control-wrap">
+								<input type="text" class="form-control" name="TIMES"
+									th:value="${TIMES}" required>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-6">
+						<div class="form-group">
+							<label class="form-label" for="full-name-1">Link ZALO</label>
+							<div class="form-control-wrap">
+								<input type="text" class="form-control" name="LINK_ZALO"
+									th:value="${LINK_ZALO}" required>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-6">
+						<div class="form-group">
+							<label class="form-label" for="full-name-1">Link FaceBook</label>
+							<div class="form-control-wrap">
+								<input type="text" class="form-control" name="LINK_FB"
+									th:value="${LINK_FB}" required>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-6">
+						<div class="form-group">
+							<label class="form-label" for="full-name-1">Link Youtube</label>
+							<div class="form-control-wrap">
+								<input type="text" class="form-control" name="LINK_YT"
+									th:value="${LINK_YT}" required>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="tab-pane" id="introduce">
+				<div class="row g-4">
+					<div class="form-group">
+						<div class="form-control-wrap">
+							<textarea class="form-control" name="CONTENT_INTRODUCE" id="cont-introduce">[[${CONTENT_INTRODUCE}]]</textarea>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="tab-pane" id="instruct">
+				<div class="row g-4">
+					<div class="form-group">
+						<div class="form-control-wrap">
+							<textarea class="form-control" name="CONTENT_INSTRUCT" id="cont-instruct">[[${CONTENT_INSTRUCT}]]</textarea>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-12 text-center p-3">
+			<button type="submit" class="btn btn-outline-primary m-1">Lưu</button>
+			<button class="btn btn-outline-light m-1">Hủy</button>
+		</div>
+
+	</form>
+
+</div>
+
+</html>

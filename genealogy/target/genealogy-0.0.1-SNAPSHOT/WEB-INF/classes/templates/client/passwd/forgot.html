@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="vn" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<!-- Main Head -->
+<head th:replace="fragments :: page_head(${pageTitle}, 'none')"></head>
+
+<body class="nk-body bg-white npc-general pg-auth">
+    <div class="nk-app-root">
+        <!-- main @s -->
+        <div class="nk-main ">
+            <!-- wrap @s -->
+            <div class="nk-wrap nk-wrap-nosidebar">
+                <!-- content @s -->
+                <div class="nk-content ">
+                    <div class="nk-block nk-block-middle nk-auth-body wide-xs">
+                        <div class="brand-logo pb-4 text-center">
+                            <a th:href="@{/}" class="logo-link">
+                                <img class="logo-light logo-img logo-img-lg" th:src="@{/} + @{${SITE_LOGO}}" alt="logo">
+                                <img class="logo-dark logo-img logo-img-lg" th:src="@{/} + @{${SITE_LOGO}}" alt="logo-dark">
+                            </a>
+                        </div>
+                        <div class="card card-bordered">
+                            <div class="card-inner card-inner-lg">
+                                <div class="nk-block-head">
+                                    <div class="nk-block-head-content">
+                                        <h4 class="nk-block-title">Quên mật khẩu</h4>
+                                        <div class="nk-block-des">
+                                            <p>Nếu bạn đã quên mật khẩu, vui lòng nhập Email đã đăng kí tài khoản. Chúng tôi sẽ xử lý yêu cầu của bạn và gửi yêu cầu đó đến Email của bạn.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <form th:action="@{/api/forgot_password}" method="post">
+									<div th:if="${error != null}">
+										<p class="text-danger">[[${error}]]</p>
+									</div>
+									<div th:if="${message != null}">
+										<p class="text-warning">[[${message}]]</p>
+									</div>
+									<div class="form-group">
+                                        <div class="form-label-group">
+                                            <label class="form-label" for="default-01">Email</label>
+                                            <a class="link link-primary link-sm" href="#">Hỗ trợ?</a>
+                                        </div>
+                                        <div class="form-control-wrap">
+                                            <input type="email" name="email" class="form-control form-control-lg" id="default-01" required="required" autofocus="autofocus" placeholder="Email của bạn...">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <button class="btn btn-lg btn-primary btn-block" type="submit">Gửi yêu cầu</button>
+                                    </div>
+                                </form>
+                                <div class="form-note-s2 text-center pt-4">Bạn đã có tài khoản <a th:href="@{/login}"><strong>Đăng nhập</strong></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- wrap @e -->
+            </div>
+            <!-- content @e -->
+        </div>
+        <!-- main @e -->
+    </div>
+    <!-- app-root @e -->
+    <!-- JavaScript -->
+    <script th:src="@{/js/bundle.js?ver=3.2.0}"></script>
+    <script th:src="@{/js/scripts.js?ver=3.2.0}"></script>
+</body>
+
+</html>

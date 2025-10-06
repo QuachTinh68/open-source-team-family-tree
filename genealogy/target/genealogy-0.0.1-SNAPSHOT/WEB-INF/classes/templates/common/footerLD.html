@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="vn" xmlns:th="http://www.thymeleaf.org">
+
+<footer class="footer bg-lighter" style="bottom: 0;" th:fragment="footerLD">
+    <div class="container">
+        <div class="row justify-content-between py-4 py-md-6">
+            <div class="col-lg-4 col-md-4 col-xxl-4">
+                <div class="widget widget-about">
+                    <a th:src="@{/}" class="logo-link">
+                        <img class="logo-light logo-img" th:src="@{/} + @{${SITE_LOGO}}" alt="logo">
+                        <img class="logo-dark logo-img" th:src="@{/} + @{${SITE_LOGO}}" alt="logo-dark">
+                    </a>
+                    <h6 class="pt-1">[[${NAME_SHOP}]]</h6>
+                    <p><span>Mã số thuế: </span>[[${TAXNO}]]</p>
+                    <p><span>Địa chỉ: </span>[[${ADDRESS_COMPANY}]]</p>
+                </div>
+            </div><!-- .col -->
+            <div class="col-lg-4 col-md-4 col-xxl-4">
+                <div class="widget">
+                    <h6 class="widget-title">Về chúng tôi</h6>
+                    <ul class="widget-link link-inline link-inline-2col link-inline-md-3col g-2 py-2">
+                        <li><a href="#" class="text-dark">Thông báo</a></li>
+                        <li><a href="#" class="text-dark">Tin tức</a></li>
+                        <li><a href="#" class="text-dark">Tin tức</a></li>
+                    </ul>
+                </div>
+            </div><!-- .col -->
+            <div class="col-lg-4 col-md-4 col-xxl-4">
+                <div class="widget">
+                    <h6 class="widget-title">Liên hệ</h6>
+                    <p><span>Điện thoại: </span>[[${TEL}]]</p>
+                    <p><span>Di động: </span>[[${PHONE}]]</p>
+                    <p><span>Địa chỉ: </span>[[${ADDRESS_COMPANY}]]</p>
+                </div>
+            </div><!-- .col -->
+        </div><!-- .row -->
+        <hr class="hr border-dark mb-0 mt-n1">
+        <div class="row g-3 align-items-center justify-content-md-between py-4">
+            <div class="col-md-8">
+                <div>[[${COPYRIGHT}]]</div>
+            </div><!-- .col -->
+            <div class="col-md-4 d-flex justify-content-md-end">
+                <ul class="social">
+                    <li><a th:href="${LINK_ZALO}" target="_blank"><em class="icon ni ni-instagram"></em></a></li>
+                    <li><a th:href="${LINK_FB}" target="_blank"><em class="icon ni ni-facebook-f"></em></a></li>
+                    <li><a th:href="${LINK_YT}" target="_blank"><em class="icon ni ni-youtube-fill"></em></a></li>
+                </ul><!-- .footer-icon -->
+            </div><!-- .col -->
+        </div><!-- .row -->
+    </div><!-- .container -->
+</footer>
+
+</html>

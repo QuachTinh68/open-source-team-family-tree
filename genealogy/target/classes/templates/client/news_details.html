@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="vn" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<!-- Main Head -->
+<head th:replace="fragments :: client_head(${pageTitle}, 'none')"></head>
+
+<body class="nk-body bg-white npc-default has-aside ">
+    <div class="nk-app-root">
+        <!-- main @s -->
+        <div class="nk-main ">
+            <!-- wrap @s -->
+            <div class="nk-wrap ">
+                <div th:replace="common/headerLD :: headerLD"></div>
+                <!-- main header @e -->
+                <!-- content @s -->
+                <div class="nk-content">
+                    <div class="container wide-xl pt-4 pb-4">
+                        <div class="nk-content-inner">
+                            <div class="nk-content-body">
+                                <div class="nk-content-wrap">
+                                    <div class="nk-block-head nk-block-head-sm">
+                                        <div class="nk-block-between g-3 border-bottom">
+                                            <div class="nk-block-head-content">
+                                                <h6 class="nk-block-title page-title">[[${news.title}]]</h6>
+                                                <div class="nk-block-des text-soft">
+                                                <ul class="list-inline">
+                                                    <li>Đăng lúc: <span class="text-base">[[${news.createdTime}]] </span><span class="text-muted ff-italic fs-9px"> ([[${news.timeAgo}]])</span></li>
+                                                    <li>Quan tâm: <span class="text-base">[[${news.numViews}]]</span></li>
+                                                    <li>Sự kiện diễn ra: <span class="text-base text-warning">[[${news.startDate}]] - [[${news.endDate}]]</span></li>
+                                                </ul>
+                                            	</div>
+                                            </div><!-- .nk-block-head-content -->
+                                        </div><!-- .nk-block-between -->
+                                    </div><!-- .nk-block-head -->
+                                    <div class="nk-block">
+                                        <div class="row g-gs">
+                                        	<div th:utext="${news.content}"></div>
+                                        </div><!-- .row -->
+                                    </div><!-- .nk-block -->
+                                </div>
+                                <!-- footer @s -->
+                                <!-- footer @e -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- content @e -->
+            </div>
+            <!-- wrap @e -->
+        </div>
+        <footer th:replace="common/footerLD :: footerLD"></footer>
+        <!-- main @e -->
+	</div>
+    <!-- JavaScript -->
+    <script th:src="@{/js/bundle.js?ver=3.2.0}"></script>
+    <script th:src="@{/js/scripts.js?ver=3.2.0}"></script>
+</body>
+
+</html>

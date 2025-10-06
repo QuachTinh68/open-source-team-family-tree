@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="vn" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<!-- Main Head -->
+<head th:replace="fragments :: page_head(${pageTitle}, 'none')"></head>
+
+<body class="nk-body bg-white npc-general pg-auth">
+    <div class="nk-app-root">
+        <!-- main @s -->
+        <div class="nk-main ">
+            <!-- wrap @s -->
+            <div class="nk-wrap nk-wrap-nosidebar">
+                <!-- content @s -->
+                <div class="nk-content ">
+                    <div class="nk-block nk-block-middle nk-auth-body wide-xs">
+                        <div class="brand-logo pb-4 text-center">
+                            <a th:href="@{/}" class="logo-link">
+                                <img class="logo-light logo-img logo-img-lg" th:src="@{/} + @{${SITE_LOGO}}" alt="logo">
+                                <img class="logo-dark logo-img logo-img-lg" th:src="@{/} + @{${SITE_LOGO}}" alt="logo-dark">
+                            </a>
+                        </div>
+                        <div class="card card-bordered">
+                            <div class="card-inner card-inner-lg">
+                                <div class="nk-block-head">
+                                    <div class="nk-block-head-content">
+                                        <h4 class="nk-block-title">Đăng kí tài khoản</h4>
+                                        <div class="nk-block-des">
+                                            <p>Sử dụng miễn phí hoàn toàn hệ thống gia phả của bạn</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <form th:action="@{/api/create_user}" method="post" th:object="${user}" onsubmit="return checkUnique(this);">
+                                    <div class="form-group">
+                                        <label class="form-label" for="name">Họ tên</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" class="form-control form-control-lg" th:field="*{name}" placeholder="Nhập tên của bạn" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label" for="userName">Tài khoản đăng nhập <span class="text-muted ff-italic fs-11px">(Không chứa khoảng trắng, kí tự đặc biệt)</span></label>
+                                        <p id="checkU" class="text-danger fw-bold ff-italic fs-10px d-flex flex-row-reverse"></p>
+                                        <div class="form-control-wrap">
+                                            <input type="text" class="form-control form-control-lg" th:field="*{userName}" placeholder="Nhập tên đăng nhập" oninput="checkUserName(this)" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label" for="email">Email</label>
+                                        <p id="checkE" class="text-danger fw-bold ff-italic fs-10px d-flex flex-row-reverse"></p>
+                                        <div class="form-control-wrap">
+                                            <input type="email" class="form-control form-control-lg" th:field="*{email}" placeholder="Email của bạn" oninput="checkEmail(this)" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label" for="password">Mật khẩu</label>
+                                        <div class="form-control-wrap">
+                                            <a href="#" class="form-icon form-icon-right passcode-switch lg" data-target="password">
+                                                <em class="passcode-icon icon-show icon ni ni-eye"></em>
+                                                <em class="passcode-icon icon-hide icon ni ni-eye-off"></em>
+                                            </a>
+                                            <input type="password" class="form-control form-control-lg" th:field="*{password}" placeholder="Nhập mật khẩu" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <button class="btn btn-lg btn-primary btn-block" type="submit">Đăng kí</button>
+                                    </div>
+                                </form>
+                                <div class="form-note-s2 text-center pt-4">Bạn đã có tài khoản <a th:href="@{/login}"><strong>Đăng nhập</strong></a>
+                                </div>
+                                <div class="text-center pt-4 pb-3">
+                                    <h6 class="overline-title overline-title-sap"><span>OR</span></h6>
+                                </div>
+                                <ul class="nav justify-center gx-8">
+                                    <li class="nav-item"><a class="nav-link" href="#">Facebook</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="#">Google</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- wrap @e -->
+            </div>
+            <!-- content @e -->
+        </div>
+        <!-- main @e -->
+    </div>
+    <!-- app-root @e -->
+    <!-- JavaScript -->
+    <script th:src="@{/js/bundle.js?ver=3.2.0}"></script>
+    <script th:src="@{/js/scripts.js?ver=3.2.0}"></script>
+
+	<script type="text/javascript">
+		
+		var isUserNameValid = false;
+		var isEmailValid = false;
+		
+		var timeoutU;
+		var timeoutE;
+
+		function checkUserName(input) {
+		    clearTimeout(timeoutU);
+
+		    timeoutU = setTimeout(function() {
+		        url = "[[@{/api/check_user}]]";
+		        userName = $("#userName").val();
+		        csrfValue = $("input[name='_csrf']").val();
+		        params = {
+		            user : userName,
+		            _csrf : csrfValue
+		        };
+
+		        $.post(url, params, function(response) {
+		        	var checkUElement = $("#checkU");
+		            if (response == "OK") {
+		            	checkUElement.text('Tên đăng nhập hợp lệ').removeClass('text-danger').addClass('text-success');
+		            	isUserNameValid = true;
+		            } else if (response == "Duplicated") {
+		            	checkUElement.text('Tên đăng nhập đã tồn tại').removeClass('text-success').addClass('text-danger');
+		            	isUserNameValid = false;
+		            } else {
+		            	Swal.fire('Cảnh báo', 'Đã xảy ra lỗi', 'warning');
+		            	isUserNameValid = false;
+					}
+
+		        }).fail(function() {
+		            Swal.fire('Cảnh báo', 'Đã xảy ra lỗi', 'warning');
+		            isUserNameValid = false;
+		        });
+		    }, 500);
+		}
+
+		function checkEmail(input) {
+		    clearTimeout(timeoutE); 
+
+		    timeoutE = setTimeout(function() {
+		        url = "[[@{/api/check_email}]]";
+		        userEmail = $("#email").val();
+		        csrfValue = $("input[name='_csrf']").val();
+		        params = {
+		            email : userEmail,
+		            _csrf : csrfValue
+		        };
+
+		        $.post(url, params, function(response) {
+		        	var checkEElement = $("#checkE");
+		            if (response == "OK") {
+		            	checkEElement.text('Email hợp lệ').removeClass('text-danger').addClass('text-success');
+		            	isEmailValid = true;
+		            } else if (response == "Duplicated") {
+		            	checkEElement.text('Email đã tồn tại').removeClass('text-success').addClass('text-danger');
+		            	isEmailValid = false;
+		            } else {
+		            	Swal.fire('Cảnh báo', 'Đã xảy ra lỗi', 'warning');
+		            	isEmailValid = false;
+					}
+
+		        }).fail(function() {
+		            Swal.fire('Cảnh báo', 'Đã xảy ra lỗi', 'warning');
+		            isEmailValid = false;
+		        });
+		    }, 500);
+		}
+		
+		
+		function checkUnique(form) {
+			checkUserName($("#userName"));
+			checkEmail($("#email"));
+
+			return isUserNameValid && isEmailValid;
+		}
+	</script>
+
+</body>
+
+</html>

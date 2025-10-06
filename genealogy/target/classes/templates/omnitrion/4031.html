@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="vn" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<!-- Main Head -->
+<head th:replace="fragments :: page_head(${pageTitle}, 'none')"></head>
+<!-- End Head -->
+
+<body class="nk-body bg-lighter npc-general has-sidebar ">
+	<div class="nk-app-root">
+		<!-- main @s -->
+		<div class="nk-main ">
+			<!-- sidebar @s -->
+			<div th:replace="common/header :: menu"></div>
+			<!-- sidebar @e -->
+			<!-- wrap @s -->
+			<div class="nk-wrap ">
+				<!-- main header @s -->
+				<div th:replace="common/header :: header-top"></div>
+				<!-- main header @e -->
+				<!-- content @s -->
+				<div class="nk-content ">
+					<div class="container-fluid">
+						<div class="nk-content-inner">
+							<div class="nk-content-body">
+								<div class="components-preview wide-md mx-auto">
+									<div class="nk-block nk-block-lg">
+										<div class="nk-block-head">
+											<div class="nk-block-head-content">
+												<h4 class="title nk-block-title" th:text="${pageTitle}"></h4>
+											</div>
+										</div>
+										<div class="card card-bordered card-preview">
+											<div class="card-inner">
+												<div class="card-inner">
+													<div class="card-head">
+														<h5 class="card-title">Thông tin cơ bản</h5>
+													</div>
+													<form th:action="@{/admin/4030/save}" method="post"
+														enctype="multipart/form-data" th:object="${news}">
+														<input type="hidden" th:field="*{id}" />
+														<input type="hidden" th:field="*{token}" />
+														<div class="row g-4">
+															<div class="col-lg-6">
+																<div class="form-group">
+																	<label class="form-label">Ngày bắt đầu sự kiện</label>
+																	<div class="form-control-wrap">
+																		<div class="form-icon form-icon-left">
+																			<em class="icon ni ni-calendar"></em>
+																		</div>
+																		<input type="text" class="form-control date-picker"
+																			th:field="*{startDate}" data-date-format="yyyy-mm-dd"
+																			required>
+																	</div>
+																</div>
+															</div>
+															<div class="col-lg-6">
+																<div class="form-group">
+																	<label class="form-label">Ngày kết thúc sự kiện</label>
+																	<div class="form-control-wrap">
+																		<div class="form-icon form-icon-left">
+																			<em class="icon ni ni-calendar"></em>
+																		</div>
+																		<input type="text" class="form-control date-picker"
+																			th:field="*{endDate}" data-date-format="yyyy-mm-dd"
+																			required>
+																	</div>
+																</div>
+															</div>
+															<div class="col-lg-12">
+																<div class="form-group">
+																	<label class="form-label" for="phone-no-1">Tiêu đề</label>
+																	<div class="form-control-wrap">
+																		<textarea class="form-control"
+																		th:field="*{title}" rows="1"></textarea>
+																	</div>
+																</div>
+																<div class="form-group">
+																	<label class="form-label" for="phone-no-1">Nội dung</label>
+																	<div class="form-control-wrap">
+																		<textarea class="form-control"
+																		th:field="*{content}" rows="5"></textarea>
+																	</div>
+																</div>
+															</div>
+															<div class="col-lg-12 row">
+																<div class="col-8">
+																	<div class="form-group">
+																		<label class="form-label">Định dạng</label>
+																		<ul class="custom-control-group g-3 align-center">
+																			<li><input type="checkbox" class=""
+																				th:field="*{enabled}"> <label class="">Mở
+																					khóa</label></li>
+																		</ul>
+																	</div>
+																</div>
+															</div>
+															<div class="col-12">
+																<div class="form-group">
+																	<button type="submit" class="btn btn-lg btn-primary">Lưu</button>
+																</div>
+															</div>
+														</div>
+													</form>
+												</div>
+											</div>
+										</div>
+										<!-- .card-preview -->
+									</div>
+									<!-- .nk-block -->
+								</div>
+								<!-- .components-preview -->
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- content @e -->
+			</div>
+			<!-- wrap @e -->
+			
+		</div>
+		<!-- main @e -->
+	</div>
+	<!-- app-root @e -->
+	<!-- JavaScript -->
+	<script th:src="@{/js/bundle.js?ver=3.2.0}"></script>
+	<script th:src="@{/js/scripts.js?ver=3.2.0}"></script>
+	<script th:src="@{/js/commom-form.js}"></script>
+	
+	<script th:src="@{/js/libs/editors/summernote.js}"></script>
+	
+	<script type="text/javascript">
+		contextPath = "[[@{/}]]";
+		moduleURL = "[[@{/admin/4030}]]";
+		
+		$('#content').summernote({
+			  minHeight: 150,
+			});
+	</script>
+
+
+</body>
+
+</html>

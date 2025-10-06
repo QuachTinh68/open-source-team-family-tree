@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="vn" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<!-- Main Head -->
+<head th:replace="fragments :: page_head(${pageTitle}, 'none')"></head>
+<!-- End Head -->
+
+<body class="nk-body bg-lighter npc-general has-sidebar ">
+    <div class="nk-app-root">
+        <!-- main @s -->
+        <div class="nk-main ">
+            <!-- sidebar @s -->
+            	<div th:replace="common/header :: menu"></div>
+            <!-- sidebar @e -->
+            <!-- wrap @s -->
+            <div class="nk-wrap ">
+                <!-- main header @s -->
+                	<div th:replace="common/header :: header-top"></div>
+                <!-- main header @e -->
+                <!-- content @s -->
+				<div class="nk-content ">
+					<div class="container-fluid">
+						<div class="nk-content-inner">
+							<div class="nk-content-body">
+								<div th:replace="fragments :: message"></div>
+								<div class="components-preview wide-md mx-auto">
+									<div class="nk-block-head nk-block-head-sm">
+										<div class="nk-block-head-content">
+											<div class="card card-bordered card-preview">
+												<div class="card-inner">
+													<div class="row gy-4">
+														<div class="col-xxl-12">
+															<h3 class="nk-block-title page-title">[[${pageTitle}]]</h3>
+														</div>
+														<div class="col-lg-11 col-xxl-11">
+															<form action="">
+																<div class="col-lg-12 col-xxl-12 row">
+																	<th:block>
+																		<div class="col-lg-3 col-xxl-3">
+																			<div class="form-group">
+																				<label class="form-label">Cây</label>
+																				<div class="form-control-wrap">
+																					<select class="form-select js-select2" id="patriId" name="patriId">
+																						<option th:each="p : ${listPatri}" th:value="${p.id}" th:text="${p.name}"></option>
+																					</select>
+																				</div>
+																			</div>
+																		</div>
+																		<div class="col-lg-3 col-xxl-3">
+																			<div class="form-group">
+																				<label class="form-label">Nội/Ngoại Tộc</label>
+																				<div class="form-control-wrap">
+																					<select class="form-select js-select2" id="patriar" name="patriar">
+																						<option value="0">All</option>
+																						<option value="1">Nội tộc</option>
+																						<option value="2">Ngoại tộc</option>
+																					</select>
+																				</div>
+																			</div>
+																		</div>
+																		<th:block th:if="${!isAdmin}">
+																		<div class="col-lg-3 col-xxl-3">
+																			<div class="form-group row">
+																				<label class="form-label" for="alias">Thêm cây mới</label>
+																				<div class="col-lg-9">
+																					<input type="text" class="form-control" id="patri" name="patri" >
+																				</div>
+																				<div class="col-lg-3">
+																					<a id="addPatri" class="btn btn-primary">Thêm</a>
+																				</div>
+																			</div>
+																		</div>
+																		</th:block>
+																	</th:block>
+																</div>
+															</form>
+														</div>
+													</div>
+												</div>
+											</div>
+											<!-- .nk-block-head-content -->
+										</div>
+										<!-- .nk-block-between -->
+									</div>
+									<!-- .nk-block-head -->
+									<div class="nk-block nk-block-lg">
+										<div class="card card-bordered card-preview">
+											<div class="card-inner">
+												<div id="tree"></div>
+											</div>
+										</div>
+										<!-- .card-preview -->
+									</div>
+									<!-- .nk-block -->
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- content @e -->
+            </div>
+
+			<!-- wrap @e -->
+        </div>
+        <!-- main @e -->
+    </div>
+    <!-- app-root @e -->
+    <!-- select region modal -->
+    <!-- .modal -->
+    <!-- JavaScript -->
+    <script th:src="@{/js/bundle.js?ver=3.2.0}"></script>
+    <script th:src="@{/js/scripts.js?ver=3.2.0}"></script>
+	<script th:src="@{/js/libs/datatable-btns.js?ver=3.2.0}"></script>
+    <script th:src="@{/js/example-sweetalert.js}"></script>
+
+	<script th:src="@{/js/dataTables.fixedColumns.min.js}"></script>
+	<script th:src="@{/js/commom-form.js}"></script>
+	
+	<script th:src="@{/js/familytree.js}"></script>
+	<script type="text/javascript">
+		moduleURL = "[[@{/user/3010}]]";
+		contextPath = "[[@{/}]]";
+		defaultImage = "[[@{/images/account-default.jpg}]]";
+		var csrfHeaderName = "[[${_csrf.headerName}]]";
+		var csrfValue = "[[${_csrf.token}]]";
+		var family;
+		
+		function listUser(url, condition){
+			var data=[];
+			$.ajax({
+				url: url,
+				method: 'GET',
+				data: condition,
+				success: function(response) {
+					if (response) {
+						response.forEach(function(item) {
+							if (typeof item.parentId === 'string') {
+								var pid= item.parentId.split(",").map(function(str) {
+									return parseInt(str, 10 );
+								});
+							}
+							var newItem = {
+									id: item.id,
+									...(pid) && {pids: pid},
+									...(item.mid) && {mid: parseInt(item.mid)},
+									...(item.fid) && {fid: parseInt(item.fid)},
+									gender: item.gender == "M"?"male": "female",
+									photo: item.filePath?contextPath+item.filePath:defaultImage,
+									name: item.name,
+									...(item.phone) && {phone: item.phone},
+									...(item.birthDay) && {born: item.birthDay.split(" ")[0]},
+									...(item.email) && {email: item.email},
+								};
+							data.push(newItem);
+						});
+						console.log(data)
+						family.load(data);
+					}
+				},
+				error: function() {
+					Swal.fire('Lỗi', 'Đã xảy ra lỗi ', 'error');
+				}
+			});
+			return data;
+		}
+		function configTree(){
+			FamilyTree.templates.mother.node = 
+				'<rect x="0" y="0" height="{h}" width="{w}" style="fill:transparent;" stroke-width="1" stroke="#F57C00" rx="5" ry="5"></rect>'
+				+ '<text style="font-size: 18px;" fill="#F57C00" x="240" y="30" text-anchor="end">Thêm mẹ</text>' + FamilyTree.icon.mother(70, 70, '#F57C00', 10, 40);
+			FamilyTree.templates.father.node = 
+				'<rect x="0" y="0" height="{h}" width="{w}" style="fill:transparent;height:{h}; width:{w};stroke-width:1;stroke:#039BE5;rx:5;ry:5;"></rect>'
+				+ '<text style="font-size: 18px;" fill="#039BE5" x="240" y="30" text-anchor="end">Thêm bố</text>' + FamilyTree.icon.father(70, 70, '#039BE5', 10, 40);
+			FamilyTree.templates.son.node = 
+				'<rect x="0" y="0" height="{h}" width="{w}" style="fill:transparent;height:{h}; width:{w};stroke-width:1;stroke:#039BE5;rx:5;ry:5;"></rect>'
+				+ '<text style="font-size: 18px;" fill="#039BE5" x="240" y="30" text-anchor="end">Thêm con trai</text>'  + FamilyTree.icon.son(70, 70, '#039BE5', 10, 40);
+			FamilyTree.templates.daughter.node = 
+				'<rect x="0" y="0" height="{h}" width="{w}" style="fill:transparent;height:{h}; width:{w};stroke-width:1;stroke:#F57C00;rx:5;ry:5;"></rect>'
+				+ '<text style="font-size: 18px;" fill="#F57C00" x="240" y="30" text-anchor="end">Thêm con gái</text>' + FamilyTree.icon.daughter(70, 70, '#F57C00', 10, 40);
+			FamilyTree.templates.husband.node = 
+				'<rect x="0" y="0" height="{h}" width="{w}" style="fill:transparent;height:{h}; width:{w};stroke-width:1;stroke:#039BE5;rx:5;ry:5;"></rect>'
+				+ '<text style="font-size: 18px;" fill="#039BE5" x="240" y="30" text-anchor="end">Thêm chồng</text>'  + FamilyTree.icon.husband(70, 70, '#039BE5', 10, 40);
+			FamilyTree.templates.wife.node = 
+				'<rect x="0" y="0" height="{h}" width="{w}" style="fill:transparent;height:{h}; width:{w};stroke-width:1;stroke:#F57C00;rx:5;ry:5;"></rect>'
+				+ '<text style="font-size: 18px;" fill="#F57C00" x="240" y="30" text-anchor="end">Thêm vợ</text>'  + FamilyTree.icon.wife(70, 70, '#F57C00', 10, 40);
+			
+			family = new FamilyTree(document.getElementById('tree'), {
+				mouseScrool: FamilyTree.action.ctrlZoom,
+				mode: 'dark',
+				template: 'hugo',
+				//roots: [parseInt($("#patriId").val())],
+				enableSearch: true,
+				miniMap: true,
+				scaleInitial:FamilyTree.match.boundary,
+				menu: {
+					pdf: { text: "Export PDF" },
+					png: { text: "Export PNG" },
+					svg: { text: "Export SVG" },
+					csv: { text: "Export CSV" }
+				},
+				nodeMenu: {
+					edit: { text: 'Sửa' },
+					details: { text: 'Chi tiết' },
+					//add: {text:"Add"},
+					remove: {text:"Xoá", onClick: (args)=>{
+												console.log('remove:'+args);
+												fetch("/api/3010/delete/"+args, {
+													method: "DELETE",
+													body: JSON.stringify(args),
+													headers: {
+														"Content-Type": "application/json",
+														"X-CSRF-Token": csrfValue
+													}
+												})
+												.then(family.removeNode(args))
+												.catch(error => console.error(error));
+											}
+					},
+				},
+				nodeTreeMenu: true,
+				nodeBinding: {
+					field_0: 'name',
+					field_1: 'born',
+					img_0: 'photo'
+				},
+				editForm: {
+					buttons:  {
+						//edit: null,
+						share: null,
+						pdf: null,
+						remove: null,
+					},
+					titleBinding: "name",
+					photoBinding: "photo",
+					addMoreBtn: 'Add element',
+					addMore: null,
+					addMoreFieldName: 'Element name',
+					generateElementsFromFields: false,
+					elements: [
+						{ type: 'textbox', label: 'Họ và tên', binding: 'name' },
+						{ type: 'textbox', label: 'Email', binding: 'email' },
+						[
+							{ type: 'textbox', label: 'Số điện thoại', binding: 'phone' },
+							{ type: 'date', label: 'Ngày sinh', binding: 'born' }
+						],
+						//{ type: 'textbox', label: 'Avatar', binding: 'photo', btn: 'Upload' },
+					]
+				},
+			});
+			
+			family.on('field', function (sender, args) {
+				if (args.name == 'born') {
+					var date = new Date(args.value);
+					args.value = date.toLocaleDateString();
+				}
+			});
+			
+			family.editUI.on('save', function (sender, args) {
+				console.log(args.data)
+				let data = {
+					id : typeof args.data.id === "string"?null:args.data.id,
+					name : args.data.name,
+					gender : args.data.gender == "male"?"M": "F",
+					phone : args.data.phone,
+					email : args.data.email,
+					birthDay : args.data.born,
+					patriId: {id: parseInt($("#patriId").val())},
+					...(args.data.fid) && {dadId: {id: args.data.fid}},
+					...(args.data.mid) && {momId: {id: args.data.mid}},
+					...(args.data.pids) && {parentId: parseInt(args.data.pids[0])},
+				};
+				console.log(data)
+				fetch("/api/3010/save", {
+					method: "POST",
+					body: JSON.stringify(data),
+					headers: {
+						"Content-Type": "application/json",
+						"X-CSRF-Token": csrfValue
+					}	
+				})
+				.then(()=>{
+					afterSaveForm();
+				})
+				.catch(error => console.error(error));
+			});
+			
+			family.editUI.on('element-btn-click', function (sender, args) {
+				FamilyTree.fileUploadDialog(function (file) {
+				console.log('avata'+file.name);
+					var data = new FormData();
+					data.append('files', file);
+			
+					fetch('/Home/UploadPhoto', {
+						method: 'POST',
+						body: data
+					}).then(response => {
+						response.json().then(responseData => {
+						args.input.value = responseData.url;
+						sender.setAvatar(responseData.url);
+						});
+					});
+				});
+			});
+		}
+
+		function afterSaveForm() {
+			if(family) { family.destroy(); };
+			configTree();
+			var condition = {
+					patriId: $("#patriId").val(),
+					patriar:  $("#patriar").val(),
+				}
+			listUser(contextPath + "api/3010/list", condition);
+		}
+
+		
+		$(document).ready(function() {
+			$(".date").datepicker({
+				format : 'dd-mm-yyyy'
+			});
+			
+			$('#patriId').change(function() {
+				afterSaveForm();
+			});
+			$('#patriar').change(function() {
+				afterSaveForm();
+			});
+			$("#addPatri").click(function () {
+				let data = {
+					name : $("#patri").val(),
+					patriId: {id: null},
+					patriar: "Y",
+					gender: "M",
+					generation: 0
+				};
+				console.log(data)
+				fetch("/api/3010/save", {
+					method: "POST",
+					body: JSON.stringify(data),
+					headers: {
+						"Content-Type": "application/json",
+						"X-CSRF-Token": csrfValue
+					}	
+				})
+				.then(location.reload())
+				.catch(error => console.error(error));
+			});
+			
+			configTree();
+			var condition = {
+					patriId: $("#patriId").val(),
+					patriar: $("#patriar").val(),
+				}
+			listUser(contextPath+"api/3010/list", condition);
+		});
+	</script>
+	     
+</body>
+
+</html>

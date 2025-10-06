@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="vn" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<!-- Main Head -->
+<head th:replace="fragments :: page_head(${pageTitle}, 'none')"></head>
+<!-- End Head -->
+
+<body class="nk-body bg-lighter npc-general has-sidebar ">
+    <div class="nk-app-root">
+        <!-- main @s -->
+        <div class="nk-main ">
+            <!-- sidebar @s -->
+            	<div th:replace="common/header :: menu"></div>
+            <!-- sidebar @e -->
+            <!-- wrap @s -->
+            <div class="nk-wrap ">
+                <!-- main header @s -->
+                	<div th:replace="common/header :: header-top"></div>
+                <!-- main header @e -->
+                <!-- content @s -->
+                <div class="nk-content ">
+                    <div class="container-fluid">
+                        <div class="nk-content-inner">
+                            <div class="nk-content-body">
+                            <div th:replace="fragments :: message"></div>
+                            <div class="components-preview wide-md mx-auto">
+									<div class="nk-block-head nk-block-head-sm">
+										<div class="nk-block-head-content">
+											<div class="card card-bordered card-preview">
+												<div class="card-inner">
+													<div class="row gy-4">
+														<div class="col-xxl-12">
+															<h3 class="nk-block-title page-title">[[${pageTitle}]]</h3>
+														</div>
+														<div th:replace="fragments :: search_date"></div>
+														<div class="col-lg-1 col-xxl-1 p-0">
+															<div class="toggle-wrap nk-block-tools-toggle d-flex flex-row-reverse">
+																<a href="#"
+																	class="btn btn-icon btn-trigger toggle-expand me-n1"
+																	data-target="pageMenu"><em
+																	class="icon ni ni-menu-alt-r"></em></a>
+																<div class="toggle-expand-content"
+																	data-content="pageMenu">
+																	<ul class="nk-block-tools g-3">
+																		<li class="nk-block-tools-opt">
+																			<div class="drodown">
+																				<a href="#"
+																					class="dropdown-toggle btn btn-icon btn-primary"
+																					data-bs-toggle="dropdown"><em
+																					class="icon ni ni-plus"></em></a>
+																				<div class="dropdown-menu dropdown-menu-end">
+																					<ul class="link-list-opt no-bdr">
+																						<li><a href="#" data-bs-toggle="modal" data-bs-target="#modalForm"><span>Thêm thông báo</span></a></li>
+																					</ul>
+																				</div>
+																			</div>
+																		</li>
+																	</ul>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<!-- .nk-block-head-content -->
+										</div>
+										<!-- .nk-block-between -->
+									</div>
+									<!-- .nk-block-head -->
+									<div class="nk-block nk-block-lg">
+										<div class="card card-bordered card-preview">
+											<div class="card-inner">
+												<table id="myDataTable" class="datatable-init-export nowrap table" data-auto-responsive="true" data-export-title="Export">
+												</table>
+											</div>
+										</div>
+										<!-- .card-preview -->
+									</div>
+									<!-- .nk-block -->
+
+								</div>
+                        	</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- content @e -->
+            </div>
+
+			<!-- wrap @e -->
+        </div>
+        <!-- main @e -->
+    </div>
+    <!-- app-root @e -->
+    <!-- select region modal -->
+    <div class="modal fade" id="modalForm">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Tạo mới tin tức</h5>
+                    <a href="#" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <em class="icon ni ni-cross"></em>
+                    </a>
+                </div>
+				<div class="modal-body modal-body-md">
+					<form th:action="@{/admin/4030/save}" class="form-validate is-alter" th:object="${news}" method="post">
+						<input type="hidden" th:field="*{id}"/>
+						<input type="hidden" th:field="*{token}"/>
+						<ul class="nk-nav nav nav-tabs">
+							<li class="nav-item"><a class="nav-link active"
+								data-bs-toggle="tab" href="#tabItem1">Thông tin cơ bản</a></li>
+							<li class="nav-item"><a class="nav-link"
+								data-bs-toggle="tab" href="#tabItem2">Nội dung</a></li>
+						</ul>
+						<div class="tab-content">
+							<div class="tab-pane active" id="tabItem1">
+								<div class="form-group">
+									<label class="form-label" for="full-name">Tiêu đề</label>
+									<div class="form-control-wrap">
+										<textarea class="form-control" rows="5" th:field="*{title}"></textarea>
+									</div>
+								</div>
+								<div class="row form-group">
+									<div class="col-md-6">
+										<label class="form-label">Ngày bắt đầu</label>
+										<div class="form-control-wrap">
+											<div class="form-icon form-icon-left">
+												<em class="icon ni ni-calendar"></em>
+											</div>
+											<input type="text" class="form-control date-picker"
+												th:field="*{startDate}" data-date-format="yyyy-mm-dd"
+												required>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<label class="form-label">Ngày kết thúc</label>
+										<div class="form-control-wrap">
+											<div class="form-icon form-icon-left">
+												<em class="icon ni ni-calendar"></em>
+											</div>
+											<input type="text" class="form-control date-picker"
+												th:field="*{endDate}" data-date-format="yyyy-mm-dd" required>
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="form-label">Định dạng</label>
+									<ul class="custom-control-group g-3 align-center">
+										<li>
+											<input type="checkbox" class="" th:field="*{enabled}">
+											<label class="">Mở khóa</label>
+										</li>
+									</ul>
+								</div>
+
+							</div>
+							<div class="tab-pane" id="tabItem2">
+								<div class="form-group">
+									<label class="form-label" for="content">Nội dung</label>
+									<div class="form-control-wrap">
+										<textarea class="summernote" th:field="*{content}" rows="5"> </textarea>
+										<div id="contentHidden"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="form-group mt-1 text-center">
+							<button type="submit" class="btn btn-lg btn-primary">Lưu</button>
+							<a href="#" id="cancelButton" class="btn btn-lg btn-warning" data-bs-dismiss="modal">Hủy</a>
+						</div>
+					</form>
+				</div>
+			</div>
+        </div>
+    </div>
+
+	<!-- JavaScript -->
+    <script th:src="@{/js/bundle.js?ver=3.2.0}"></script>
+    <script th:src="@{/js/scripts.js?ver=3.2.0}"></script>
+	<script th:src="@{/js/libs/datatable-btns.js?ver=3.2.0}"></script>
+    <script th:src="@{/js/example-sweetalert.js}"></script>
+    <script th:src="@{/js/example-toastr.js}"></script>
+
+	<script th:src="@{/js/dataTables.fixedColumns.min.js}"></script>
+	
+	<script th:src="@{/js/commom-list.js}"></script>
+	<script type="text/javascript">
+		moduleURL = "[[@{/admin/4030}]]";
+		contextPath = "[[@{/}]]";
+		
+		toast = '[[${toast}]]';
+		
+		var csrfHeaderName = "[[${_csrf.headerName}]]";
+		var csrfValue = "[[${_csrf.token}]]";
+		var flag=false;
+		
+		function loaddata(){
+			
+			var dataTableOptions = {
+				responsive : {
+					details : false
+				},
+	
+				fixedColumns : {
+					leftColumns : 2
+				}
+			};
+			var mergedOptions = Object.assign({}, mergedOptions, dataTableOptions);
+			
+			var arr = [ {title:"Hành động", field: null, delEdit: true, className: "text-center", name:"id"},
+						{title:"Tiêu đề", field:"title"},
+						{title:"Lượt View", field:"numViews"},
+						{title:"Bắt đầu", field:"startDate"},
+						{title:"Kết thúc", field:"endDate"},
+						{title:"T.gian tạo", field:"createdTime"},
+						{title:"C.nhật lần cuối", field:"updatedTime"},
+						{title:"Người c.nhật", field:"workUser"},
+						];
+			var arrURL = {api: "/api/4030/list", urlEdit: "/admin/4030/edit/", urlDel: "/api/4030/delete/"};
+			var conditon = { fromDate : $("#fromDate").val() ,
+					 toDate : $("#toDate").val()
+					}
+			npl.gird.create('.datatable-init-export', arrURL, conditon, arr, mergedOptions);
+		}
+		
+		function afterSaveForm() {
+			$('#myDataTable').DataTable().destroy();
+			$('#modalForm').on('hidden.bs.modal', function() {
+			});
+			loaddata();
+		}
+
+		$(document).ready(function() {
+			
+			if (toast != null) {
+				npl.Toast(toast, 'success');
+			}
+			
+			$(".date").datepicker({
+				format : 'dd-mm-yyyy'
+			});
+			
+			$(document).on('change', '.popClass', function() {
+				if(!flag){
+					flag=true;
+					Promise.resolve().then(function() {
+						afterSaveForm();
+						flag = false;
+					});
+				}
+			});
+			
+			loaddata();
+
+			$(document).on("click", ".link-delete", function(e) {
+				e.preventDefault();
+				var entityName = $(this).attr("data-entityName");
+				showDeleteConfirm($(this), entityName, moduleURL);
+
+			});
+
+		});
+	</script>
+	
+	<script th:src="@{/js/libs/editors/summernote.js}"></script>
+
+</body>
+
+</html>

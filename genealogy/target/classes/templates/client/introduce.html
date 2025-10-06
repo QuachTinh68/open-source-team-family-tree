@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="vn" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<!-- Main Head -->
+<head th:replace="fragments :: client_head(${pageTitle}, 'none')"></head>
+<body>
+	<div id="wrapper">
+		<!-- page preloader begin -->
+		<div id="de-loader"></div>
+		<!-- page preloader close -->
+		<!-- header begin -->
+		<header th:replace="common/headerLD :: headerLD"></header>
+		<!-- header close -->
+		<!-- content begin -->
+		<div class="no-bottom no-top" id="content">
+			<div id="top"></div>
+			<!-- section begin -->
+			<section id="subheader" class="jarallax">
+				<img src="/client/images/background/subheader.jpg"
+					class="jarallax-img" alt="">
+				<div class="center-y relative text-center">
+					<div class="container">
+						<div class="row">
+							<div class="col-md-12 text-center">
+								<h1>Giới thiệu về chúng tôi</h1>
+							</div>
+							<div class="clearfix"></div>
+						</div>
+					</div>
+				</div>
+			</section>
+			<!-- section close -->
+			<section aria-label="section">
+				<div class="container">
+					<div class="row g-custom-x">
+						<div th:utext="${CONTENT_INTRODUCE}"></div>
+					</div>
+				</div>
+			</section>
+		</div>
+		<!-- content close -->
+		<a href="#" id="back-to-top"></a>
+		<!-- footer begin -->
+		<footer th:replace="common/footerLD :: footerLD"></footer>
+		<!-- footer close -->
+
+	</div>
+	<!-- JavaScript -->
+	<script th:src="@{/client/js/plugins.js}"></script>
+	<script th:src="@{/client/js/designesia.js}"></script>
+
+</body>
+
+</html>

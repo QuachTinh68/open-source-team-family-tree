@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="vn" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<!-- Main Head -->
+<head th:replace="fragments :: page_head('Trang chủ', 'none')"></head>
+
+<body class="nk-body bg-white npc-default has-aside ">
+    <div class="nk-app-root">
+        <!-- main @s -->
+        <div class="nk-main ">
+            <!-- wrap @s -->
+            <div class="nk-wrap ">
+                <div th:replace="common/headerLD :: headerLD"></div>
+                <!-- main header @e -->
+                <!-- content @s -->
+                <div class="nk-content">
+                    <div class="container wide-xl pt-4 pb-4">
+                        <div class="nk-content-inner">
+                            <div class="nk-content-body">
+                                <div class="nk-block-head nk-block-head-sm">
+                                    <div class="nk-block-between">
+                                        <div class="nk-block-head-content">
+                                            <h3 class="nk-block-title page-title">Tin tức</h3>
+                                        </div>
+                                    </div>
+                                </div><!-- .nk-block-head -->
+                                <div class="nk-block">
+                                    <div class="row g-gs">
+                                    <th:block th:each="item : ${listNews}">
+                                        <div class="col-sm-12 col-lg-6 col-xxl-6">
+                                            <div class="card card-bordered h-100">
+                                                <div class="card-inner">
+                                                    <div class="project">
+                                                        <div class="project-head">
+                                                            <a th:href="@{/api/news/} + ${item.token}" class="project-title">
+                                                                <div class="project-info">
+                                                                    <h6 class="title">[[${item.title}]]</h6>
+                                                                    <span class="sub-text">Thời gian: [[${item.createdTime}]]</span>
+                                                                </div>
+                                                            </a>
+                                                        </div>
+                                                        <!-- <div class="project-details">
+                                                            <p th:utext="${item.content}"></p>
+                                                        </div> -->
+                                                        <div class="project-meta">
+                                                            <ul class="project-users g-1">
+                                                                <li><em class="icon ni ni-eye"></em>
+                                                                    <span>[[${item.numViews}]]</span>
+                                                                </li>
+                                                            </ul>
+                                                            <span class="badge badge-dim bg-warning"><em class="icon ni ni-clock"></em><span>[[${item.timeAgo}]]</span></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </th:block>
+                                    </div>
+                                </div><!-- .nk-block -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- content @e -->
+            </div>
+            <!-- wrap @e -->
+        </div>
+        <!-- main @e -->
+        <footer th:replace="common/footerLD :: footerLD"></footer>
+    </div>
+    <!-- JavaScript -->
+    <script th:src="@{/js/bundle.js?ver=3.2.0}"></script>
+    <script th:src="@{/js/scripts.js?ver=3.2.0}"></script>
+</body>
+
+</html>

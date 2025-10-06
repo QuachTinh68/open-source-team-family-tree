@@ -1,0 +1,43 @@
+.d-flex{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.fs-9px{
+	font-size: 9px;
+}
+.fs-10px{
+	font-size: 10px;
+}
+.fs-11px{
+	font-size: 11px;
+}
+.fs-12px{
+	font-size: 12px;
+}
+.fs-13px{
+	font-size: 13px;
+}
+.fs-14px{
+	font-size: 14px;
+}
+.fs-15px{
+	font-size: 15px;
+}
+.fs-16px{
+	font-size: 16px;
+}
+.top-card{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.img-user{
+	width: 30%!important
+}
+.card{
+	padding: 60px 80px
+}
+.input-group-append {
+  cursor: pointer;
+}

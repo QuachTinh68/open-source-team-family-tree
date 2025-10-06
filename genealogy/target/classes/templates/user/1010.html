@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="vn" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<!-- Main Head -->
+<head th:replace="fragments :: page_head(${pageTitle}, 'none')"></head>
+<!-- End Head -->
+
+<body class="nk-body bg-lighter npc-general has-sidebar ">
+    <div class="nk-app-root">
+        <!-- main @s -->
+        <div class="nk-main ">
+            <!-- sidebar @s -->
+            	<div th:replace="common/header :: menu"></div>
+            <!-- sidebar @e -->
+            <!-- wrap @s -->
+            <div class="nk-wrap ">
+                <!-- main header @s -->
+                	<div th:replace="common/header :: header-top"></div>
+                <!-- main header @e -->
+                <!-- content @s -->
+				<div class="nk-content ">
+					<div class="container-fluid">
+						<div class="nk-content-inner">
+							<div class="nk-content-body">
+								<div th:replace="fragments :: message"></div>
+								<div class="components-preview wide-md mx-auto">
+									<div class="nk-block-head nk-block-head-sm">
+										<div class="nk-block-head-content">
+											<div class="card card-bordered card-preview">
+												<div class="card-inner">
+													<div class="row gy-4">
+														<div class="col-xxl-12">
+															<h3 class="nk-block-title page-title">[[${pageTitle}]]</h3>
+														</div>
+														<div th:replace="fragments :: search_date"></div>
+														<div class="col-lg-1 col-xxl-1 p-0">
+															<div class="toggle-wrap nk-block-tools-toggle d-flex flex-row-reverse">
+																<a href="#"
+																	class="btn btn-icon btn-trigger toggle-expand me-n1"
+																	data-target="pageMenu"><em
+																	class="icon ni ni-menu-alt-r"></em></a>
+																<div class="toggle-expand-content"
+																	data-content="pageMenu">
+																	<ul class="nk-block-tools g-3">
+																		<li class="nk-block-tools-opt">
+																			<div class="drodown">
+																				<a href="#"
+																					class="dropdown-toggle btn btn-icon btn-primary"
+																					data-bs-toggle="dropdown"><em
+																					class="icon ni ni-plus"></em></a>
+																				<div class="dropdown-menu dropdown-menu-end">
+																					<ul class="link-list-opt no-bdr">
+																						<li><a href="#" data-bs-toggle="modal" onclick="openNewModal()"><span>Thêm User</span></a></li>
+																						<li><a href="#"><span>Thông báo đã hết hạn</span></a></li>
+																					</ul>
+																				</div>
+																			</div>
+																		</li>
+																	</ul>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<!-- .nk-block-head-content -->
+										</div>
+										<!-- .nk-block-between -->
+									</div>
+									<!-- .nk-block-head -->
+									<div class="nk-block nk-block-lg">
+										<div class="card card-bordered card-preview">
+											<div class="card-inner">
+												<table id="myDataTable" class="datatable-init-export nowrap table" data-auto-responsive="true" data-export-title="Export">
+												</table>
+											</div>
+										</div>
+										<!-- .card-preview -->
+									</div>
+									<!-- .nk-block -->
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- content @e -->
+            </div>
+
+			<!-- wrap @e -->
+        </div>
+        <!-- main @e -->
+    </div>
+    <!-- app-root @e -->
+    <!-- select region modal -->
+    <div class="modal fade" id="newModal">
+        <div class="modal-dialog modal-lg modal-md" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Customer Info</h5>
+                    <a href="#" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <em class="icon ni ni-cross"></em>
+                    </a>
+                </div>
+                <div class="modal-body modal-body-lg modal-body-md">
+					<form action="#" class="form-validate is-alter" id="formUser" th:object="${user}" enctype="multipart/form-data">
+						<input type="hidden" th:field="*{id}"/> 
+						<div class="row g-4">
+							<div class="col-lg-6">
+								<div class="form-group">
+									<label class="form-label" for="email">Tên đăng nhập</label>
+									<div class="form-control-wrap">
+										<input class="form-control" type="text" th:field="*{userName}" required>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-6">
+								<div class="form-group">
+									<label class="form-label" for="passwd">Mật khẩu</label>
+									<div class="form-control-wrap">
+										<input class="form-control" type="password" th:field="*{password}"
+											required>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-6">
+								<div class="form-group">
+									<label class="form-label" for="email">Email</label>
+									<div class="form-control-wrap">
+										<input class="form-control" type="text" th:field="*{email}"
+											required>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-6">
+								<div class="form-group">
+									<label class="form-label" for="phone">Số điện thoại</label>
+									<div class="form-control-wrap">
+										<input class="form-control" type="number" th:field="*{phone}">
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-6">
+								<div class="form-group">
+									<label class="form-label" for="birthDay">Ngày sinh</label>
+									<input type="text" class="form-control date" id="birthDay" th:field="*{birthDay}">
+								</div>
+							</div>
+							<div class="col-lg-6">
+								<div class="form-group">
+									<label class="form-label" for="adress">Địa chỉ</label>
+									<div class="form-control-wrap">
+										<input type="text" class="form-control" th:field="*{adress}">
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-6">
+								<div class="form-group">
+									<label class="form-label" for="idencard">Số CMND/CCCD</label>
+									<div class="form-control-wrap">
+										<input class="form-control" type="number" th:field="*{identity}">
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-6">
+								<div class="form-group">
+									<label class="form-label">Gia tộc</label>
+									<div class="form-control-wrap">
+										<select class="form-select js-select2" id="comId0" name="comId0">
+											<option th:each="com : ${listCom}" th:value="${com.id}" th:text="${com.comName}"></option>
+										</select>
+									</div>
+								</div>
+							</div>
+							<!-- <div class="col-lg-6">
+								<div class="form-group">
+									<label class="form-label" for="roles">Chức vụ</label>
+									<div class="form-control-wrap">
+										<select class="form-select js-select2" id="roles" th:field="*{roleId}">
+											<th:block th:each:="role : ${listRole}">
+												 <option th:each="role : ${listRole}" th:value="${role.roleId}" th:text="${role.name}"></option>
+											</th:block>
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-6 row">
+								<div class="m-2">
+									<img id="thumbnail" alt="Main image preview" class="img-fluid" width="200px" src="/images/default-image.jpg">
+								</div>
+								<div id="myfileupload">
+									<label for="imgupload" class="custom-file-upload btn btn-sm btn-dim btn-light">Chọn ảnh</label> 
+									<input type="file" id="imgupload" th:field="*{fileData}" accept="image/png , image/jpeg" style="display: none"/>
+								</div>
+							</div> -->
+							<div class="col-lg-12">
+								<div class="custom-control custom-switch">
+									<input type="checkbox" class="custom-control-input" id="enable" th:field="*{enabled}">
+									<label class="custom-control-label" for="enable">Kích hoạt tài khoản</label>
+								</div>
+							</div>
+						</div>
+						<div class="form-group mt-1 text-center">
+							<button type="submit"  class="btn btn-lg btn-primary">Lưu</button>
+							<a href="#" id="cancelButton" class="btn btn-lg btn-warning"
+								data-bs-dismiss="modal">Hủy</a>
+						</div>
+					</form>
+				</div>
+            </div>
+        </div>
+    </div>
+    <!-- .modal -->
+    <!-- JavaScript -->
+    <script th:src="@{/js/bundle.js?ver=3.2.0}"></script>
+    <script th:src="@{/js/scripts.js?ver=3.2.0}"></script>
+	<script th:src="@{/js/libs/datatable-btns.js?ver=3.2.0}"></script>
+    <script th:src="@{/js/example-sweetalert.js}"></script>
+
+	<script th:src="@{/js/dataTables.fixedColumns.min.js}"></script>
+	<script th:src="@{/js/commom-list.js}"></script>
+	<script th:src="@{/js/commom-form.js}"></script>
+	<script type="text/javascript">
+		
+		moduleURL = "[[@{/user/1010}]]";
+		contextPath = "[[@{/}]]";
+		MAX_FILE_SIZE = 5000000; //5MB
+		defaultImageThumbnailSrc = "[[@{/images/default-image.jpg}]]";
+		var csrfHeaderName = "[[${_csrf.headerName}]]";
+		var csrfValue = "[[${_csrf.token}]]";
+		var flag=false;
+		
+		function fetchDataById(id, callback) {
+			var url = contextPath + "api/1010/" + id.toString();
+			$.ajax({
+				type : "Get",
+				url : url,
+				dataType : 'json',
+				beforeSend : function(xhr) {
+					xhr.setRequestHeader(csrfHeaderName, csrfValue);
+				},
+				success : function(response) {
+					callback(response);
+				},
+				error : function(xhr, status, error) {
+					Swal.fire({
+						icon : 'error',
+						title : xhr.responseText
+					});
+				}
+			});
+		}
+		
+		
+		function loaddata() {
+
+			var dataTableOptions = {
+				responsive : {
+					details : false
+				},
+
+				buttons : [ {
+					extend : 'print',
+					exportOptions : {
+						columns : ':visible:not(:lt(1))'
+					}
+				}, {
+					extend : 'excel',
+					exportOptions : {
+						columns : ':visible:not(:lt(1))'
+					}
+				}, {
+					extend : 'colvis',
+					exportOptions : {
+						columns : ':visible:not(:lt(1))'
+					}
+				}, ],
+				fixedColumns : {
+					leftColumns : 2
+				}
+			};
+			var mergedOptions = Object.assign({}, mergedOptions, dataTableOptions);
+
+			var arr = [ 
+						{ title : "Họ Tên", field : "name" , url:"/pathInfo/", id:"id"},
+						{ title : "SĐT", field : "phone" },
+						{ title : "CMND/CCCD", field : "identity" },
+						{ title : "Email", field : "email" },
+						{ title : "G.tính", field : "gender" , gender:true},
+						{ title : "N.Sinh", field : "birthDay" },
+						{ title : "Thế hệ", field : "generation" },
+						{ title : "Chức vụ", field : "roleName" }, 
+						{ title : "T.gian tạo", field : "updatedTime" },
+						{ title : "Cập nhật", field : "createdTime" }, 
+						{ title : "Người c.nhật", field : "workUser" }, 
+					];
+			var arrURL = { 	api : "/api/1010/list", urlDel : "/user/1010/delete/" };
+			var conditon = { fromDate : $("#fromDate").val() ,
+							 toDate : $("#toDate").val()
+							}
+			
+			npl.gird.create('.datatable-init-export', arrURL, conditon, arr, mergedOptions);
+		}
+		
+		function disabledControl(disabled){
+			$("#userName").prop("readonly", disabled);
+			$("#passwd").prop("readonly", disabled);
+			$("#email").prop("readonly", disabled);
+			$("#birtDay").prop("readonly", disabled);
+			$("#adress").prop("readonly", disabled);
+			$("#phone").prop("readonly", disabled);
+			$("#identity").prop("readonly", disabled);
+			$('#roles').prop('disabled', disabled);
+			$("#enable").prop( "disabled", disabled );
+			if(disabled){
+				$("#myfileupload").hide();
+			}else{
+				$("#myfileupload").show();
+			}
+		}
+		
+		function openNewModal(){
+			disabledControl(false);
+			document.getElementById("formUser").reset();
+			$("#brandId").val('');
+			$("#listCateIds").val(null).trigger("change");
+			$("#thumbnail").attr("src", "/images/default-image.jpg");
+			$("#newModal").modal("show");
+		}
+
+		function openEditModal(id) {
+			disabledControl(false);
+			$(".title").text("Chỉnh sửa User");
+			$("#userId").val(id)
+			fetchDataById(id, function(data) {
+				$("#userName").val(data.userName);
+				$("#thumbnail").attr({ "src": data.filePath?contextPath+data.filePath:'/images/default-image.jpg'});
+				$("#email").val(data.email);
+				$("#birthDay").datepicker("setDate", new Date(data.birthDay));
+				$("#adress").val(data.adress);
+				$("#phone").val(data.phone);
+				$("#identity").val(data.identity);
+				$("#enable").prop("checked", data.enabled);
+
+				$("#newModal").modal("show");
+			});
+		}
+
+		function openInfoModal(id) {
+			disabledControl(true);
+			$(".title").text("Chi tiết thông báo");
+			$("#userId").val(id)
+			fetchDataById(id, function(data) {
+				$("#userName").val(data.userName);
+				$("#thumbnail").attr({ "src": data.filePath});
+				$("#email").val(data.email);
+				$("#birthDay").datepicker("setDate", new Date(data.birthDay));
+				$("#adress").val(data.adress);
+				$("#phone").val(data.phone);
+				$("#identity").val(data.identity);
+				$("#enable").prop("checked", data.enabled);
+
+				//$("#birthDay").datepicker("destroy");
+
+				$("#newModal").modal("show");
+			});
+		}
+
+		function readURL(input) {
+			var file = input.files[0];
+			var reader = new FileReader();
+			reader.onload = function (e) {
+				$('#thumbnail').attr('src', e.target.result);
+			}
+			reader.readAsDataURL(file);
+		}
+		
+		function afterSaveForm() {
+			$('#myDataTable').DataTable().destroy();
+			$('#newModal').on('hidden.bs.modal', function() {
+			});
+			loaddata();
+		}
+
+		$(document).ready(function() {
+			$(".date").datepicker({
+				format : 'dd-mm-yyyy'
+			});
+			
+			$('#imgupload').change(function() {
+				readURL(this);
+			});
+			$(document).on('change', '.popClass', function() {
+				if(!flag){
+					flag=true;
+					Promise.resolve().then(function() {
+						afterSaveForm();
+						flag = false;
+					});
+				}
+			});
+
+			loaddata();
+
+			$(document).on("click", ".link-delete", function(e) {
+				e.preventDefault();
+				var entityName = $(this).attr("data-entityName");
+				showDeleteConfirm($(this), entityName, moduleURL);
+
+			});
+		});
+	</script>
+	     
+</body>
+
+</html>

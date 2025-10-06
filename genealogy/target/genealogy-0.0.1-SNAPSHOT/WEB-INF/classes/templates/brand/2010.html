@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="vn" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<!-- Main Head -->
+<head th:replace="fragments :: page_head(${pageTitle}, 'none')"></head>
+<!-- End Head -->
+
+<body class="nk-body bg-lighter npc-general has-sidebar ">
+    <div class="nk-app-root">
+        <!-- main @s -->
+        <div class="nk-main ">
+            <!-- sidebar @s -->
+            	<div th:replace="common/header :: menu"></div>
+            <!-- sidebar @e -->
+            <!-- wrap @s -->
+            <div class="nk-wrap ">
+                <!-- main header @s -->
+                	<div th:replace="common/header :: header-top"></div>
+                <!-- main header @e -->
+                <!-- content @s -->
+                <div class="nk-content ">
+                    <div class="container-fluid">
+                        <div class="nk-content-inner">
+                            <div class="nk-content-body">
+                            <div th:replace="fragments :: message"></div>
+                            <div class="components-preview wide-md mx-auto">
+                                <div class="nk-block-head nk-block-head-sm">
+                                    <div class="nk-block-between">
+                                        <div class="nk-block-head-content">
+                                            <h3 class="nk-block-title page-title">[[${pageTitle}]]</h3>
+                                            <div class="nk-block-des text-soft">
+                                                <p> Hiện có <span th:text="${countRows}">0</span> thông báo.</p>
+                                            </div>
+                                        </div><!-- .nk-block-head-content -->
+                                        <div class="nk-block-head-content">
+                                            <div class="toggle-wrap nk-block-tools-toggle">
+                                                <a href="#" class="btn btn-icon btn-trigger toggle-expand me-n1" data-target="pageMenu"><em class="icon ni ni-menu-alt-r"></em></a>
+                                                <div class="toggle-expand-content" data-content="pageMenu">
+                                                    <ul class="nk-block-tools g-3">
+                                                        <li class="nk-block-tools-opt">
+                                                            <div class="drodown">
+                                                                <a href="#" class="dropdown-toggle btn btn-icon btn-primary" data-bs-toggle="dropdown"><em class="icon ni ni-plus"></em></a>
+                                                                <div class="dropdown-menu dropdown-menu-end">
+                                                                    <ul class="link-list-opt no-bdr">
+                                                                        <li><a href="#" data-bs-toggle="modal" onclick="openNewModal()"><span>Tạo tin</span></a></li>
+                                                                        <li><a href="#"><span>Thông báo đã hết hạn</span></a></li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div><!-- .toggle-wrap -->
+                                        </div><!-- .nk-block-head-content -->
+                                    </div><!-- .nk-block-between -->
+                                </div><!-- .nk-block-head -->
+                                <div class="nk-block nk-block-lg">
+                                       <div class="card card-bordered card-preview">
+                                           <div class="card-inner">
+											<table id="myDataTable" class="datatable-init-export nowrap table" data-auto-responsive="true" data-export-title="Export">
+											</table>
+											</div>
+                                       </div><!-- .card-preview -->
+                                   </div><!-- .nk-block -->
+                                   
+                            </div>
+                        	</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- content @e -->
+            </div>
+
+			<!-- wrap @e -->
+        </div>
+        <!-- main @e -->
+    </div>
+    <!-- app-root @e -->
+    <!-- select region modal -->
+    <div class="modal fade" tabindex="-1" role="dialog" id="newModal" data-backdrop="static">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <a href="#" class="close" data-bs-dismiss="modal"><em class="icon ni ni-cross-sm"></em></a>
+				<div class="modal-body modal-body-md">
+					<h4 class="title">Tạo Thương Hiệu Mới</h4>
+					<form action="#" id="formBrand" th:object="${brand}" class="form-validate is-alter" enctype="multipart/form-data">
+						<input type="hidden" th:field="*{brandId}"/> 
+						<div class="row g-4">
+							<div class="col-lg-6">
+								<div class="form-group">
+									<label class="form-label" for="fullname">Name</label>
+									<div class="form-control-wrap">
+										<input type="text" class="form-control" required th:field="*{name}">
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-6">
+								<div class="form-group">
+									<label class="form-label" for="parentId">Parent Category</label>
+									<div class="form-control-wrap">
+										<select class="form-select js-select2" id="listCateIds" data-allow-clear="true" multiple="multiple" required>
+											<th:block th:each:="cat : ${listCat}">
+												 <option th:each="cat : ${listCat}" th:value="${cat.catId}" th:text="${cat.name}"></option>
+											</th:block>
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-6 row">
+								<div class="m-2">
+									<img id="thumbnail" alt="Main image preview" class="img-fluid" width="200px" src="./images/default-image.jpg">
+								</div>
+								<div id="myfileupload">
+									<label for="imgupload" class="custom-file-upload btn btn-sm btn-dim btn-light">Chọn ảnh</label> 
+									<input type="file" id="imgupload" th:field="*{fileData}" accept="image/png , image/jpeg" style="display: none"/>
+								</div>
+							</div>
+							<div class="col-lg-12">
+								<div class="custom-control custom-switch">
+									<input type="checkbox" class="custom-control-input" id="enable">
+									<label class="custom-control-label" for="enable">Kích hoạt</label>
+								</div>
+							</div>
+						</div>
+						<div class="form-group mt-1 text-center">
+							<button type="submit" class="btn btn-lg btn-primary">Lưu</button>
+							<a href="#" id="cancelButton" class="btn btn-lg btn-warning" data-bs-dismiss="modal">Hủy</a>
+						</div>
+					</form>
+				</div>
+			</div>
+        </div>
+    </div>
+    <!-- .modal -->
+    <!-- JavaScript -->
+    <script th:src="@{/js/bundle.js?ver=3.2.0}"></script>
+    <script th:src="@{/js/scripts.js?ver=3.2.0}"></script>
+	<script th:src="@{/js/libs/datatable-btns.js?ver=3.2.0}"></script>
+    <script th:src="@{/js/example-sweetalert.js}"></script>
+
+	<script th:src="@{/js/dataTables.fixedColumns.min.js}"></script>
+	
+	<script th:src="@{/js/commom-list.js}"></script>
+	<script th:src="@{/js/commom-form.js}"></script>
+	<script type="text/javascript">
+		moduleURL = "[[@{/brand/2010}]]";
+		contextPath = "[[@{/}]]";
+		MAX_FILE_SIZE = 5000000; //5MB
+		
+		var csrfHeaderName = "[[${_csrf.headerName}]]";
+		var csrfValue = "[[${_csrf.token}]]";
+		
+		function findDataById(id, callback){
+			var url = contextPath+ "brand/2010/"+id.toString();
+			$.ajax({
+				type: "Get",
+				url: url,
+				dataType: 'json',
+				beforeSend: function(xhr) {
+					xhr.setRequestHeader(csrfHeaderName, csrfValue);
+				},
+				success: function(response) {
+					callback(response);
+				},
+				error: function(xhr, status, error) {
+					Swal.fire({icon: 'error', title: xhr.responseText});
+				}
+			});
+		}
+		
+		function listCateByBrand(url, brandId){
+			$.ajax({
+				url: url,
+				method: 'GET',
+				data: { brandId: brandId },
+				success: function(response) {
+					if (response) {
+						const selectElement = $('#listCateIds');
+						// Lấy danh sách các giá trị (values) từ danh sách response
+						const selectedValues = response.map(category => category.catId);
+	
+						// Sử dụng .val(selectedValues) để chọn các tùy chọn tương ứng
+						selectElement.val(selectedValues);
+	
+						// Cập nhật Select2 sau khi chọn các tùy chọn
+						selectElement.trigger('change');
+					}
+				},
+				error: function() {
+					Swal.fire('Lỗi', 'Đã xảy ra lỗi ', 'error');
+				}
+			});
+		}
+		
+		function disabledControl(disabled){
+			$("#name").prop("readonly", disabled);
+			$('#listCateIds').prop('disabled', disabled);
+			$("#enable").prop( "disabled", disabled );
+			if(disabled){
+				$("#myfileupload").hide();
+			}else{
+				$("#myfileupload").show();
+			}
+		}
+		
+		function openNewModal(){
+			disabledControl(false);
+			document.getElementById("formBrand").reset();
+			$("#brandId").val('');
+			$("#listCateIds").val(null).trigger("change");
+			$("#thumbnail").attr("src", "/images/default-image.jpg");
+			$("#newModal").modal("show");
+		}
+		
+		function openEditModal(id) {
+			disabledControl(false);
+			$(".title").text("Chỉnh sửa thương hiệu");
+			$("#brandId").val(id);
+			$("#imgupload").val('');
+			listCateByBrand("/category/listCate", id);
+			findDataById(id, function (data) {
+				$("#name").val(data.name);
+				$("#thumbnail").attr({ "src": data.filePath?contextPath+data.filePath:'/images/default-image.jpg'});
+				$("#enable").prop("checked", data.isEnabled === "Y");
+				
+				$("#newModal").modal("show");
+			});
+		}
+		
+		function openInfoModal(id) {
+			disabledControl(true);
+			$(".title").text("Chi tiết thương hiệu");
+			$("#brandId").val(id)
+			listCateByBrand("/category/listCate", id)
+			findDataById(id, function (data) {
+				$("#name").val(data.name);
+				$("#thumbnail").attr("src", data.filePath?contextPath+data.filePath:'/images/default-image.jpg');
+				$("#enable").prop("checked", data.isEnabled === "Y");
+				
+				$("#newModal").modal("show");
+			});
+		}
+		
+		function readURL(input) {
+			var file = input.files[0];
+			var reader = new FileReader();
+			reader.onload = function (e) {
+				$('#thumbnail').attr('src', e.target.result);
+			}
+			reader.readAsDataURL(file);
+		}
+		
+		function loaddata(){
+			
+			var dataTableOptions = {
+						responsive: {
+							details: false
+						},
+						
+						buttons: [
+							{
+								extend: 'print',
+								exportOptions: {
+									columns: ':visible:not(:lt(1))'
+								}
+							},
+							{
+								extend: 'excel',
+								exportOptions: {
+									columns: ':visible:not(:lt(1))'
+								}
+							},
+							{
+								extend: 'colvis',
+								exportOptions: {
+								columns: ':visible:not(:lt(1))'
+								}
+							},
+						],
+						fixedColumns: {
+						leftColumns: 2
+					}
+		 	};
+			var mergedOptions = Object.assign({}, mergedOptions, dataTableOptions);
+			
+			var arr = [ {title:"Action", field: null, delEdit: true, className: "text-center", name:"brandId"},
+						{title:"Id", field:"brandId"},
+						{title:"Logo", field:"filePath", img:true},
+						{title:"Name", field:"name"},
+						{title:"Category", field:"listCate", list:true},
+						{title:"Status", field:"isEnabled", status:true},
+						];
+			var arrURL = {api: "/brand/2010/list", urlDel: "/brand/2010/delete/"};
+			npl.gird.create('.datatable-init-export', arrURL, "", arr, mergedOptions);
+		}
+		
+		$(document).on('click', '#cancelButton', function() { 
+			$("#newModal").trigger('reset'); 
+		});
+
+		function afterSaveForm() {
+			$('#newModal').modal("hide");
+			$('#myDataTable').DataTable().destroy();
+
+			loaddata();
+		}
+
+		$(document).ready(function() {
+			$('#content').summernote({
+				minHeight : 150,
+			});
+			$(".date").datepicker({
+				format : 'dd-mm-yyyy'
+			});
+			$('#imgupload').change(function(){
+				 readURL(this);
+			});
+
+			$('#formBrand').on('submit', function(e) {
+				e.preventDefault();
+				var form0 = $('#formBrand')[0];
+				var data = new FormData(form0);
+				var fileInput = document.getElementById("imgupload");
+				const selectElement = document.getElementById('listCateIds');
+				const listCateIds = [];
+				
+				for (let i = 0; i < selectElement.options.length; i++) {
+					if (selectElement.options[i].selected) {
+						listCateIds.push(selectElement.options[i].value);
+					}
+				}
+				data.append("listCateIds", listCateIds);
+				data.append("enable" , ($("#enable").is(":checked") ? "Y" : "N"));
+
+				if (fileInput.files.length > 0) {
+					data.append("fileData", fileInput.files[0]);
+				}
+
+				save("/brand/2010/save", data);
+			});
+
+			loaddata();
+
+			$(document).on("click", ".link-delete", function(e) {
+				e.preventDefault();
+				var entityName = $(this).attr("data-entityName");
+				showDeleteConfirm($(this), entityName, moduleURL);
+			});
+		});
+	</script>
+	
+	<script th:src="@{/js/libs/editors/summernote.js}"></script>
+
+</body>
+
+</html>

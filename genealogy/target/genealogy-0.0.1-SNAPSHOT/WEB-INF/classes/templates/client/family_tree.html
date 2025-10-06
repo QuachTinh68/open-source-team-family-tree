@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="vn" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<!-- Main Head -->
+<head th:replace="fragments :: page_head('Trang chủ', 'none')"></head>
+
+<body class="nk-body bg-white npc-default has-aside ">
+    <div class="nk-app-root">
+        <!-- main @s -->
+        <div class="nk-main ">
+            <!-- wrap @s -->
+            <div class="nk-wrap ">
+                <div th:replace="common/headerLD :: headerLD"></div>
+                <!-- main header @e -->
+                <!-- content @s -->
+                <div class="nk-content">
+                    <div class="container wide-xl pt-4 pb-4">
+                        <div class="nk-content-inner">
+                            <div class="nk-content-body">
+                                <div class="nk-content-wrap">
+                                    <div class="nk-block-head nk-block-head-sm">
+                                        <div class="nk-block-between">
+                                            <div class="nk-block-head-content">
+                                                <h3 class="nk-block-title page-title">Phả Đồ</h3>
+                                            </div><!-- .nk-block-head-content -->
+                                            <div class="col-lg-3 col-xxl-3 d-none">
+												<div class="form-group">
+													<label class="form-label">Cây</label>
+													<div class="form-control-wrap">
+														<select class="form-select js-select2" id="patriId" name="patriId">
+															<option th:each="p : ${listPatri}" th:value="${p.id}" th:text="${p.name}"></option>
+														</select>
+													</div>
+												</div>
+											</div>
+                                        </div><!-- .nk-block-between -->
+                                    </div><!-- .nk-block-head -->
+                                    <div class="nk-block">
+                                        <div class="row g-gs">
+                                        	<div id="tree"></div>
+                                        </div><!-- .row -->
+                                    </div><!-- .nk-block -->
+                                </div>
+                                <!-- footer @s -->
+                                <!-- footer @e -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- content @e -->
+            </div>
+            <!-- wrap @e -->
+        </div>
+        <!-- main @e -->
+        <footer th:replace="common/footerLD :: footerLD"></footer>
+    </div>
+    <!-- JavaScript -->
+    <script th:src="@{/js/bundle.js?ver=3.2.0}"></script>
+    <script th:src="@{/js/scripts.js?ver=3.2.0}"></script>
+	<script th:src="@{/js/libs/datatable-btns.js?ver=3.2.0}"></script>
+    <script th:src="@{/js/example-sweetalert.js}"></script>
+
+	<script th:src="@{/js/dataTables.fixedColumns.min.js}"></script>
+	<script th:src="@{/js/commom-form.js}"></script>
+	
+	<script th:src="@{/js/familytree.js}"></script>
+    <script type="text/javascript">
+		moduleURL = "[[@{/user/3010}]]";
+		contextPath = "[[@{/}]]";
+		defaultImage = "[[@{/images/account-default.jpg}]]";
+		var csrfHeaderName = "[[${_csrf.headerName}]]";
+		var csrfValue = "[[${_csrf.token}]]";
+		var family;
+		
+		function listUser(url, condition){
+			var data=[];
+			$.ajax({
+				url: url,
+				method: 'GET',
+				data: condition,
+				success: function(response) {
+					if (response) {
+						response.forEach(function(item) {
+							if (typeof item.parentId === 'string') {
+								var pid= item.parentId.split(",").map(function(str) {
+									return parseInt(str, 10 );
+								});
+							}
+							var newItem = {
+									id: item.id,
+									...(pid) && {pids: pid},
+									...(item.mid) && {mid: parseInt(item.mid)},
+									...(item.fid) && {fid: parseInt(item.fid)},
+									gender: item.gender == "M"?"male": "female",
+									photo: item.filePath?contextPath+item.filePath:defaultImage,
+									name: item.name,
+									...(item.phone) && {phone: item.phone},
+									...(item.birthDay) && {born: item.birthDay.split(" ")[0]},
+									...(item.email) && {email: item.email},
+								};
+							data.push(newItem);
+						});
+						family.load(data);
+					}
+				},
+				error: function() {
+					Swal.fire('Lỗi', 'Đã xảy ra lỗi ', 'error');
+				}
+			});
+			return data;
+		}
+		function configTree(){
+			family = new FamilyTree(document.getElementById('tree'), {
+				mouseScrool: FamilyTree.action.ctrlZoom,
+				mode: 'light',
+				template: 'hugo',
+				//roots: [parseInt($("#patriId").val())],
+				enableSearch: true,
+				//miniMap: true,
+				scaleInitial:FamilyTree.match.boundary,
+				menu: {
+					pdf: { text: "Export PDF" },
+					png: { text: "Export PNG" },
+					svg: { text: "Export SVG" },
+					csv: { text: "Export CSV" }
+				},
+				nodeBinding: {
+					field_0: 'name',
+					field_1: 'born',
+					img_0: 'photo'
+				},
+				editForm: {
+					buttons:  {
+						edit: null,
+						remove: null,
+					},
+					generateElementsFromFields: false,
+					elements: [
+						{ type: 'textbox', label: 'Họ và tên', binding: 'name' },
+						{ type: 'textbox', label: 'Email', binding: 'email' },
+						[
+							{ type: 'textbox', label: 'Số điện thoại', binding: 'phone' },
+							{ type: 'date', label: 'Ngày sinh', binding: 'born' }
+						],
+						//{ type: 'textbox', label: 'Avatar', binding: 'photo', btn: 'Upload' },
+					]
+				},
+			});
+			
+			family.on('field', function (sender, args) {
+				if (args.name == 'born') {
+					var date = new Date(args.value);
+					args.value = date.toLocaleDateString();
+				}
+			});
+		}
+
+		
+		$(document).ready(function() {
+			configTree();
+			var condition = {
+					patriId:$("#patriId").val(),
+			}
+			listUser(contextPath+"api/3010/tree", condition);
+		});
+	</script>
+</body>
+
+</html>

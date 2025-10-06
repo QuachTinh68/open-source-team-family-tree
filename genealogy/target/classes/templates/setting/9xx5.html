@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="vn" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<div th:fragment="content" th:remove="tag">
+
+	<form th:action="@{/admin/settings/save_mail_server}" method="post" >
+		<div class="row g-4">
+			<div class="col-lg-6">
+				<div class="form-group">
+					<label class="form-label" >SMTP Tên máy chủ mail</label>
+					<div class="form-control-wrap">
+						<input type="text" class="form-control" name="MAIL_HOST"
+							th:value="${MAIL_HOST}" required>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-6">
+				<div class="form-group">
+					<label class="form-label" >Cổng</label>
+					<div class="form-control-wrap">
+						<input type="text" class="form-control" name="MAIL_PORT"
+							th:value="${MAIL_PORT}" required>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-6">
+				<div class="form-group">
+					<label class="form-label" >Email chủ</label>
+					<div class="form-control-wrap">
+						<input type="text" class="form-control" name="MAIL_USERNAME"
+							th:value="${MAIL_USERNAME}" required>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-6">
+				<div class="form-group">
+					<label class="form-label">Mật khẩu ứng dụng</label>
+					<div class="form-control-wrap">
+						<input type="text" class="form-control" name="MAIL_PASSWORD"
+							th:value="${MAIL_PASSWORD}" required>
+					</div>
+				</div>
+			</div>
+			
+			<div class="col-lg-6">
+				<div class="form-group">
+					<label class="form-label">Yêu cầu xác thực máy chủ</label>
+					<div class="form-control-wrap">
+						<select class="form-select js-select2" name="SMTP_AUTH">
+							<option value="true" th:selected="(${SMTP_AUTH} == 'true')">Có</option>
+							<option value="false" th:selected="(${SMTP_AUTH} == 'false')">Không</option>
+						</select>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-6">
+				<div class="form-group">
+					<label class="form-label">Máy chủ yêu cầu kết nối an toàn (TLS)</label>
+					<div class="form-control-wrap">
+						<select class="form-select js-select2" name="SMTP_SECURED">
+							<option value="true" th:selected="(${SMTP_SECURED} == 'true')">Có</option>
+							<option value="false" th:selected="(${SMTP_SECURED} == 'false')">Không</option>
+						</select>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-6">
+				<div class="form-group">
+					<label class="form-label">Gửi từ địa chỉ Mail</label>
+					<div class="form-control-wrap">
+						<input type="text" class="form-control" name="MAIL_FROM"
+							th:value="${MAIL_FROM}" required>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-6">
+				<div class="form-group">
+					<label class="form-label">Tên người gửi</label>
+					<div class="form-control-wrap">
+						<input type="text" class="form-control" name="MAIL_SENDER_NAME"
+							th:value="${MAIL_SENDER_NAME}" required>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-12 text-center p-3">
+			<button type="submit" class="btn btn-outline-primary m-1">Lưu</button>
+			<button class="btn btn-outline-light m-1">Hủy</button>
+		</div>
+
+	</form>
+
+</div>
+
+</html>

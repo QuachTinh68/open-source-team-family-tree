@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="vn" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<!-- Main Head -->
+<head th:replace="fragments :: page_head(${pageTitle}, 'none')"></head>
+<!-- End Head -->
+
+<body class="nk-body bg-lighter npc-general has-sidebar ">
+    <div class="nk-app-root">
+        <!-- main @s -->
+        <div class="nk-main ">
+            <!-- sidebar @s -->
+            	<div th:replace="common/header :: menu"></div>
+            <!-- sidebar @e -->
+            <!-- wrap @s -->
+            <div class="nk-wrap ">
+                <!-- main header @s -->
+                	<div th:replace="common/header :: header-top"></div>
+                <!-- main header @e -->
+                <!-- content @s -->
+				<div class="nk-content ">
+					<div class="container-fluid">
+						<div class="nk-content-inner">
+							<div class="nk-content-body">
+								<div th:replace="fragments :: message"></div>
+								<div class="components-preview wide-md mx-auto">
+									<div class="nk-block-head nk-block-head-sm">
+										<div class="nk-block-head-content">
+											<div class="card card-bordered card-preview">
+												<div class="card-inner">
+													<div class="row gy-4">
+														<div class="col-xxl-12">
+															<h3 class="nk-block-title page-title">[[${pageTitle}]]</h3>
+														</div>
+														<div class="col-lg-11 col-xxl-11">
+															<form action="">
+																<div class="col-lg-12 col-xxl-12 row">
+																	<th:block>
+																		<div class="col-lg-3 col-xxl-3">
+																			<div class="form-group">
+																				<label class="form-label">Cây</label>
+																				<div class="form-control-wrap">
+																					<select class="form-select js-select2" id="patriId" name="patriId">
+																						<option th:each="p : ${listPatri}" th:value="${p.id}" th:text="${p.name}"></option>
+																					</select>
+																				</div>
+																			</div>
+																		</div>
+																		<div class="col-lg-3 col-xxl-3">
+																			<div class="form-group">
+																				<label class="form-label">Nội/Ngoại Tộc</label>
+																				<div class="form-control-wrap">
+																					<select class="form-select js-select2" id="patriar" name="patriar">
+																						<option value="0">All</option>
+																						<option value="1">Nội tộc</option>
+																						<option value="2">Ngoại tộc</option>
+																					</select>
+																				</div>
+																			</div>
+																		</div>
+																	</th:block>
+																</div>
+															</form>
+														</div>
+													</div>
+												</div>
+											</div>
+											<!-- .nk-block-head-content -->
+										</div>
+										<!-- .nk-block-between -->
+									</div>
+									<!-- .nk-block-head -->
+									<div class="nk-block nk-block-lg">
+										<div class="card card-bordered card-preview">
+											<div class="card-inner">
+												<table id="myDataTable" class="datatable-init-export nowrap table" data-auto-responsive="true" data-export-title="Export">
+												</table>
+											</div>
+										</div>
+										<!-- .card-preview -->
+									</div>
+									<!-- .nk-block -->
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- content @e -->
+            </div>
+
+			<!-- wrap @e -->
+        </div>
+        <!-- main @e -->
+    </div>
+    <!-- app-root @e -->
+    <!-- select region modal -->
+    <!-- .modal -->
+    <!-- JavaScript -->
+    <script th:src="@{/js/bundle.js?ver=3.2.0}"></script>
+    <script th:src="@{/js/scripts.js?ver=3.2.0}"></script>
+	<script th:src="@{/js/libs/datatable-btns.js?ver=3.2.0}"></script>
+    <script th:src="@{/js/example-sweetalert.js}"></script>
+
+	<script th:src="@{/js/dataTables.fixedColumns.min.js}"></script>
+		<script th:src="@{/js/commom-list.js}"></script>
+	<script th:src="@{/js/commom-form.js}"></script>
+	<script th:src="@{/js/commom-form.js}"></script>
+	
+	<script th:src="@{/js/familytree.js}"></script>
+	<script type="text/javascript">
+		moduleURL = "[[@{/user/3010}]]";
+		contextPath = "[[@{/}]]";
+		defaultImage = "[[@{/images/account-default.jpg}]]";
+		var csrfHeaderName = "[[${_csrf.headerName}]]";
+		var csrfValue = "[[${_csrf.token}]]";
+		var family;
+		
+		toast = '[[${toast}]]';
+		
+		function fetchDataById(id, callback) {
+			var url = contextPath + "api/3010/" + id.toString();
+			$.ajax({
+				type : "Get",
+				url : url,
+				dataType : 'json',
+				beforeSend : function(xhr) {
+					xhr.setRequestHeader(csrfHeaderName, csrfValue);
+				},
+				success : function(response) {
+					callback(response);
+				},
+				error : function(xhr, status, error) {
+					Swal.fire({
+						icon : 'error',
+						title : xhr.responseText
+					});
+				}
+			});
+		}
+		function listUser(url, patriId){
+			var data=[];
+			$.ajax({
+				url: url,
+				method: 'GET',
+				data: { patriId: patriId 
+				},
+				success: function(response) {
+					if (response) {
+						response.forEach(function(item) {
+							if (typeof item.parentId === 'string') {
+								var pid= item.parentId.split(",").map(function(str) {
+									return parseInt(str, 10 );
+								});
+							}
+							var newItem = {
+									id: item.id,
+									...(pid) && {pids: pid},
+									...(item.mid) && {mid: parseInt(item.mid)},
+									...(item.fid) && {fid: parseInt(item.fid)},
+									gender: item.gender == "M"?"male": "female",
+									photo: item.filePath?contextPath+item.filePath:defaultImage,
+									name: item.name,
+									...(item.phone) && {phone: item.phone},
+									...(item.birthDay) && {born: item.birthDay.split(" ")[0]},
+									...(item.email) && {email: item.email},
+								};
+							data.push(newItem);
+						});
+						console.log(data)
+						family.load(data);
+					}
+				},
+				error: function() {
+					Swal.fire('Lỗi', 'Đã xảy ra lỗi ', 'error');
+				}
+			});
+			return data;
+		}
+		
+		function loaddata() {
+
+			var dataTableOptions = {
+				responsive : {
+					details : false
+				},
+
+				buttons : [ {
+					extend : 'print',
+					exportOptions : {
+						columns : ':visible:not(:lt(1))'
+					}
+				}, {
+					extend : 'excel',
+					exportOptions : {
+						columns : ':visible:not(:lt(1))'
+					}
+				}, {
+					extend : 'colvis',
+					exportOptions : {
+						columns : ':visible:not(:lt(1))'
+					}
+				}, ],
+				fixedColumns : {
+					leftColumns : 2
+				}
+			};
+			var mergedOptions = Object.assign({}, mergedOptions, dataTableOptions);
+
+			var arr = [ { title : "Tác vụ", field : null, delEdit : true, className : "text-center", name : "id" },
+						{ title : "Họ Tên", field : "name" , url:"/pathInfo/", id:"id"},
+						{ title : "SĐT", field : "phone" },
+						{ title : "Email", field : "email" },
+						{ title : "G.tính", field : "gender" , gender:true},
+						{ title : "Ngày Sinh", field : "birthDay" },
+						{ title : "Ngày Mất", field : "dieDay" },
+						{ title : "Nơi sinh", field : "placeBirth" },
+						{ title : "Nơi an nghỉ", field : "placeDie" },
+						{ title : "Thế hệ", field : "generation" },
+						{ title : "T.gian tạo", field : "updatedTime" },
+						{ title : "Cập nhật", field : "createdTime" }, 
+						{ title : "Người c.nhật", field : "workUser" }, 
+					];
+			var arrURL = { 	api : "/api/2010/list", urlEdit: "/admin/2010/edit/", urlDel : "/api/3010/delete/" };
+			var conditon = { patriId : $("#patriId").val() ,
+							}
+			var condition = {
+					patriId: $("#patriId").val(),
+					patriar: $("#patriar").val(),
+				}
+			npl.gird.create('.datatable-init-export', arrURL, condition, arr, mergedOptions);
+		}
+
+		function afterSaveForm() {
+			$('#myDataTable').DataTable().destroy();
+			$('#newModal').on('hidden.bs.modal', function() {
+			});
+			loaddata();
+		}
+
+		
+		$(document).ready(function() {
+			$(".date").datepicker({
+				format : 'dd-mm-yyyy'
+			});
+			
+			if (toast != null) {
+				npl.Toast(toast, 'success');
+			}
+			
+			$('#patriId').change(function() {
+				afterSaveForm();
+			});
+			$('#patriar').change(function() {
+				afterSaveForm();
+			});
+			loaddata();
+
+			$(document).on("click", ".link-delete", function(e) {
+				e.preventDefault();
+				var entityName = $(this).attr("data-entityName");
+				showDeleteConfirm($(this), entityName, moduleURL);
+
+			});
+		});
+	</script>
+	     
+</body>
+
+</html>

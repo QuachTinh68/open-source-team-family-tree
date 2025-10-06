@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="vn" xmlns:th="http://www.thymeleaf.org">
+
+<header class="header-light transparent has-topbar" th:fragment="headerLD">
+            <div id="topbar">
+                <div class="container">
+                    <div class="topbar-left xs-hide">
+                        <span class="topbar-widget">
+                            <a href="#">Chào mừng bạn!</a>
+                        </span>
+                    </div>
+                
+                    <div class="topbar-right">
+                        <div class="topbar-widget"><a href="#"><i class="fa fa-phone"></i>09 7777 9999</a></div>
+                        <div class="topbar-widget"><a href="#"><i class="fa fa-envelope"></i>support@nghia_it.com</a></div>
+                        <th:block sec:authorize="isAuthenticated()">
+                        	<div class="topbar-widget"><a th:href="@{/api/acount}"><i class="fa fa-user" aria-hidden="true"></i>Tài khoản</a></div>
+                        </th:block>
+                    </div>  
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="de-flex sm-pt10">
+                            <div class="de-flex-col">
+                                <div class="de-flex-col">
+                                    <!-- logo begin -->
+                                    <div id="logo">
+                                        <a th:href="@{/}">
+                                            <img class="logo-main" th:src="@{/} + @{${SITE_LOGO}}" alt="" >
+                                            <img class="logo-mobile" th:src="@{/} + @{${SITE_LOGO}}" alt="" >
+                                        </a>
+                                    </div>
+                                    <!-- logo close -->
+                                </div>
+                            </div>
+                            <div class="de-flex-col header-col-mid">
+                                <ul id="mainmenu">
+                                    <li><a class="menu-item" th:href="@{/}">Trag chủ</a></li>
+                                    <li><a class="menu-item" href="#">Chúng tôi</a>
+                                        <ul class="mega">
+                                            <li>
+                                                <div class="container">
+                                                    <div class="sb-menu p-4 pb-0">
+                                                        <div class="row g-custom-x">
+                                                            <div class="col-lg-4 mb-sm-30">
+                                                                <h4>Miễn phí đăng kí</h4>
+                                                                <p>Không giới hạn dung lượng sử dụng.</p>
+                                                            </div>
+                                                            <div class="col-lg-4">
+                                                                <a class="box-icon mb20" th:href="@{/api/introduce}">
+                                                                    <img src="images/svg/server-svgrepo-com.svg" alt="">
+                                                                    <div class="d-inner">
+                                                                        <h4>Lịch sử hình thành</h4>
+                                                                        Khởi đầu từ thế kỉ 21.
+                                                                    </div>
+                                                                </a>
+                                                                <a class="box-icon mb20" th:href="@{/api/instruct}">
+                                                                    <img src="images/svg/cloud-svgrepo-com.svg" alt="">
+                                                                    <div class="d-inner">
+                                                                        <h4>Hướng dẫn sử dụng</h4>
+                                                                        Tận tâm tạo nên thương hiệu.
+                                                                    </div>
+                                                                </a>
+                                                            </div>
+                                                            <div class="col-lg-4">
+                                                                <a class="box-icon mb20" href="#">
+                                                                    <img src="images/svg/server-2-svgrepo-com.svg" alt="">
+                                                                    <div class="d-inner">
+                                                                        <h4>Câu hỏi thường gặp</h4>
+                                                                        Giải đáp mọi thắc mắc.
+                                                                    </div>
+                                                                </a>
+                                                                <a class="box-icon mb20" href="#">
+                                                                    <img src="images/svg/wordpress-svgrepo-com.svg" alt="">
+                                                                    <div class="d-inner">
+                                                                        <h4>Mở rộng và kêt nối</h4>
+                                                                        Đưa bạn đến với thế giới mới.
+                                                                    </div>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li><a class="menu-item" th:href="@{/api/familyTree}">Cây</a></li>
+                                    <li><a class="menu-item" th:href="@{/api/contact}">Liên hệ</a></li>
+                                </ul>
+                            </div>
+                            <div class="de-flex-col">
+                            	<th:block sec:authorize="isAuthenticated()">
+                                <div class="menu_side_area">
+                                    <a th:href="@{/admin}" class="btn-main" target="_blank">Tới trang quản trị</a>
+                                    <span id="menu-btn"></span>
+                                </div>
+                                </th:block>
+                            	<th:block sec:authorize="!isAuthenticated()">
+                                <div class="menu_side_area">
+                                    <a th:href="@{/login}" class="btn-main">Đăng nhập</a>
+                                    <span id="menu-btn"></span>
+                                </div>
+                                </th:block>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+</html>
